@@ -3,90 +3,71 @@ package model;
 import java.time.LocalDateTime;
 
 public class Appointment {
-	private   String         idAppointment;  /*IDClient,IDProperty;  we don't have to use it (in database id_ap =idClient*+idProperty* and date to be unique to */
-    private   LocalDateTime  dateTime ;
-    private   String         state ;
-    private   LocalDateTime  createdAt;
-    private   Worker         createdW;
-	
-    
-    public Appointment(String idAppointment, LocalDateTime dateTime, String state, LocalDateTime createdAt,
-	p		model.Worker createdW ,Client client , Property Property) {
-    	
-		super();
-		this.idAppointment = client.getId() + "_" + property.getidProperty()+ "_" + dateTime.toString();
-		this.dateTime = dateTime;
-		this.state = state;
-		this.createdAt = createdAt;
-		this.createdW = createdW;
-	}
 
+    private String idAppointment; 
+    private LocalDateTime dateTime; 
+    private AppointmentState state; 
+    private LocalDateTime createdAt; // When the appointment was created
+    private Worker createdBy; // Worker who created the appointment
 
-	public String getIdAppointment() {
-		return idAppointment;
-	}
+    public enum AppointmentState {
+        SCHEDULED,
+        COMPLETED,
+        CANCELLED,
+        PENDING
+    }
 
+    public Appointment(Client client, Property property, LocalDateTime dateTime, 
+                       AppointmentState state, Worker createdBy) {
+        if (client == null || property == null || dateTime == null || state == null || createdBy == null) {
+            throw new IllegalArgumentException("All parameters must be non-null.");
+        }
 
-	public void setIdAppointment(String idAppointment) {
-		this.idAppointment = idAppointment;
-	}
+        this.idAppointment = client.getId() + "_" + property.getIdProperty() + "_" + dateTime.toString();
+        this.dateTime = dateTime;
+        this.state = state;
+        this.createdAt = LocalDateTime.now();
+        this.createdBy = createdBy;
+    }
 
+    public String getIdAppointment() {
+        return idAppointment;
+    }
 
-	public LocalDateTime getDateTime() {
-		return dateTime;
-	}
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
 
+    public void setDateTime(LocalDateTime dateTime) {
+        if (dateTime == null) throw new IllegalArgumentException("DateTime cannot be null.");
+        this.dateTime = dateTime;
+    }
 
-	public void setDateTime(LocalDateTime dateTime) {
-		this.dateTime = dateTime;
-	}
+    public AppointmentState getState() {
+        return state;
+    }
 
+    public void setState(AppointmentState state) {
+        if (state == null) throw new IllegalArgumentException("State cannot be null.");
+        this.state = state;
+    }
 
-	public String getState() {
-		return state;
-	}
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
+    public Worker getCreatedBy() {
+        return createdBy;
+    }
 
-	public void setState(String state) {
-		this.state = state;
-	}
-
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-
-	public Worker getCreatedW() {
-		return createdW;
-	}
-
-
-	public void setCreatedW(Worker createdW) {
-		this.createdW = createdW;
-	}
-
-
-	@Override
-	public String toString() {
-
-		 return "Appointment{" +
-               "idAppointment='" + idAppointment + '\'' +
-               ", dateTime=" + dateTime +
-               ", state='" + state + '\'' +
-               ", createdAt=" + createdAt +
-               ", createdBy=" + createdW.getName() +
-               '}';
-	}
-
-
-
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "idAppointment='" + idAppointment + '\'' +
+                ", dateTime=" + dateTime +
+                ", state=" + state +
+                ", createdAt=" + createdAt +
+                ", createdBy=" + createdBy.getName() +
+                '}';
+    }
 }
-
-
-
