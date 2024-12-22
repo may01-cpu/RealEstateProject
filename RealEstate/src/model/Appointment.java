@@ -8,22 +8,15 @@ public class Appointment {
     private LocalDateTime dateTime; 
     private AppointmentState state; 
     private LocalDateTime createdAt; // When the appointment was created
-    private Worker createdBy; // Worker who created the appointment
-
-    public enum AppointmentState {
-        SCHEDULED,
-        COMPLETED,
-        CANCELLED,
-        PENDING
-    }
-
+    private Worker createdBy; // Worker who created the appointment 
+    
     public Appointment(Client client, Property property, LocalDateTime dateTime, 
                        AppointmentState state, Worker createdBy) {
         if (client == null || property == null || dateTime == null || state == null || createdBy == null) {
             throw new IllegalArgumentException("All parameters must be non-null.");
         }
 
-        this.idAppointment = client.getId() + "_" + property.getIdProperty() + "_" + dateTime.toString();
+        this.idAppointment = client.getId() + "_" + property.getIdProperty(idAppointment) + "_" + dateTime.toString();
         this.dateTime = dateTime;
         this.state = state;
         this.createdAt = LocalDateTime.now();
@@ -67,7 +60,8 @@ public class Appointment {
                 ", dateTime=" + dateTime +
                 ", state=" + state +
                 ", createdAt=" + createdAt +
-                ", createdBy=" + createdBy.getName() +
+                ", createdBy=" + createdBy.getFirstName() +
                 '}';
     }
+
 }
