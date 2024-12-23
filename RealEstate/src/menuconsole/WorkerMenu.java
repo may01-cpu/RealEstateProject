@@ -2,6 +2,7 @@ package menuconsole;
 
 import model.Client;
 import model.ClientType;
+import model.UserType;
 import model.Worker;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -68,13 +69,16 @@ public class WorkerMenu {
         System.out.println("Select Client Type (1. BAILLEUR, 2. ACHETEUR, 3. LOCATAIRE, 4. VENDEUR): ");
         int clientTypeChoice = scanner.nextInt();
         scanner.nextLine(); // Consume the newline
-        ClientType clientType = ClientType.values()[clientTypeChoice - 1];
+
+        ClientType clientType = ClientType.values()[clientTypeChoice - 1]; // Get ClientType
+        UserType userType = UserType.CLIENT; // Use UserType.CLIENT
 
         // Create and add the client to the list
-        Client newClient = new Client(firstName, lastName, email, phoneNum, password, id, clientType);
+        Client newClient = new Client(id, firstName, lastName, email, phoneNum, password, userType, clientType);
         clients.add(newClient);
         System.out.println("Client added successfully!");
     }
+
 
     // Method to assign a property to a client
     private void assignPropertyToClient(Scanner scanner) {

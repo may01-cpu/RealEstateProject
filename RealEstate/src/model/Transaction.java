@@ -20,7 +20,7 @@ public class Transaction {
     private Date dateFin;
     private double montantPaiement;
 
-    
+
     public Transaction(TransactionType transactionType, String idTransaction, String initiatorId, String recipientId, double price, Status status, Date date, Date dateDebut, Date dateFin, double montantPaiement) {
         this.transactionType = transactionType;
         this.idTransaction = idTransaction;

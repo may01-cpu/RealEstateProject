@@ -1,5 +1,6 @@
 package model;
 
 public enum UserType {
-    CLIENT,WORKER;
+    CLIENT,
+    WORKER
 }

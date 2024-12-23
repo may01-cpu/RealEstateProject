@@ -13,8 +13,11 @@ public class Property {
     private double Size;
     private double Price;
     private Address location;
-    private String Id;
+    private String IdProperty;
     private PropertyStat Stat;
     private PropertyLegalStat LegalStat;
 
+    public String getIdProperty( String IdProperty) {
+		return IdProperty ;
+	}
 }
