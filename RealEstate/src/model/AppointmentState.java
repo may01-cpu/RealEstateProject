@@ -1,7 +1,8 @@
 package model;
 
 public enum AppointmentState {
-    SCHEDULED,
-    COMPLETED,
-    CANCELLED,
+    SCHEDULED, //Prévu
+    COMPLETED, //Terminé
+    CANCELLED, //Annulé 
+    
 }

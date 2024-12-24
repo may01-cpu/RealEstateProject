@@ -1,6 +1,8 @@
 package model;
 
 import java.time.LocalDateTime;
+import utils.IDGenerator;
+
 
 public class Appointment {
 
@@ -10,18 +12,23 @@ public class Appointment {
     private LocalDateTime createdAt; // When the appointment was created
     private Worker createdBy; // Worker who created the appointment 
     
-    public Appointment(Client client, Property property, LocalDateTime dateTime, 
-                       AppointmentState state, Worker createdBy) {
-        if (client == null || property == null || dateTime == null || state == null || createdBy == null) {
-            throw new IllegalArgumentException("All parameters must be non-null.");
-        }
+    // Constructeur principal
+    public Appointment( LocalDateTime dateTime, AppointmentState state, Worker createdBy) {
+                        if (dateTime == null) throw new IllegalArgumentException("DateTime cannot be null.");
+                        if (dateTime.isBefore(LocalDateTime.now())) {
+                            throw new IllegalArgumentException("Appointment dateTime cannot be in the past.");
+                        }
+                        if (state == null) throw new IllegalArgumentException("State cannot be null.");
+                        if (createdBy == null) throw new IllegalArgumentException("CreatedBy (Worker) cannot be null.");
 
-        this.idAppointment = client.getId() + "_" + property.getIdProperty(idAppointment) + "_" + dateTime.toString();
+        this.idAppointment = IDGenerator.generateAppointmentID();
         this.dateTime = dateTime;
         this.state = state;
         this.createdAt = LocalDateTime.now();
         this.createdBy = createdBy;
     }
+
+    //get & set
 
     public String getIdAppointment() {
         return idAppointment;
@@ -33,6 +40,7 @@ public class Appointment {
 
     public void setDateTime(LocalDateTime dateTime) {
         if (dateTime == null) throw new IllegalArgumentException("DateTime cannot be null.");
+        if (dateTime.isBefore(LocalDateTime.now())) throw new IllegalArgumentException("Appointment dateTime cannot be in the past.");
         this.dateTime = dateTime;
     }
 
@@ -47,7 +55,7 @@ public class Appointment {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
+    }  //il n'y a pas de setter pour createdAt 
 
     public Worker getCreatedBy() {
         return createdBy;
@@ -60,8 +68,10 @@ public class Appointment {
                 ", dateTime=" + dateTime +
                 ", state=" + state +
                 ", createdAt=" + createdAt +
-                ", createdBy=" + createdBy.getFirstName() +
+                ", createdBy=" + createdBy.getFirstName() +" " +createdBy.getLastName() +
                 '}';
     }
+
+
 
 }
