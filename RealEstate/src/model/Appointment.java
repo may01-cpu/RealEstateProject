@@ -8,10 +8,10 @@ public class Appointment {
     private LocalDateTime dateTime; 
     private AppointmentState state; 
     private LocalDateTime createdAt; // When the appointment was created
-    private Worker createdBy; // Worker who created the appointment 
+    private Agent createdBy; // Worker who created the appointment
     
     public Appointment(Client client, Property property, LocalDateTime dateTime, 
-                       AppointmentState state, Worker createdBy) {
+                       AppointmentState state, Agent createdBy) {
         if (client == null || property == null || dateTime == null || state == null || createdBy == null) {
             throw new IllegalArgumentException("All parameters must be non-null.");
         }
@@ -49,7 +49,7 @@ public class Appointment {
         return createdAt;
     }
 
-    public Worker getCreatedBy() {
+    public Agent getCreatedBy() {
         return createdBy;
     }
 
