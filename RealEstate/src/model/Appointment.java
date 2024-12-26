@@ -3,10 +3,9 @@ package model;
 import java.time.LocalDateTime;
 import utils.IDGenerator;
 
-
 public class Appointment {
 
-    private String idAppointment; 
+    private String idAppointment;   //id client?/
     private LocalDateTime dateTime; 
     private AppointmentState state; 
     private LocalDateTime createdAt; // When the appointment was created

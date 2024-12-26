@@ -43,6 +43,7 @@ public class AppointmentService {
         for (Appointment appointment : AppList) {
             System.out.println(appointment);
         }
+        //Approve or reject an appointment??
     }
 }
 

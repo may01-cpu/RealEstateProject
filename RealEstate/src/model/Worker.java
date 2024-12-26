@@ -1,6 +1,7 @@
 package model;
 
-public class Worker extends User {
+public class Worker extends User  {
+
     private String role;
 
     public Worker(String firstName, String lastName, String email, String phoneNum, String password, String id, String role) {
