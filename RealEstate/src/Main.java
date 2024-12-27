@@ -3,6 +3,7 @@ import model.AppointmentState;
 import model.Worker;
 import service.AppointmentService;
 
+
 public class Main {
 
     public static void main(String[] args) {
@@ -28,5 +29,8 @@ public class Main {
         // Listing all appointments
         System.out.println("List of Appointments:");
         appointmentService.listAppointments();
+
+
+
     }
 }
