@@ -11,13 +11,6 @@ public class Appointment {
     private LocalDateTime createdAt; // When the appointment was created
     private Agent createdBy; // Worker who created the appointment
     
-<<<<<<< HEAD
-    public Appointment(Client client, Property property, LocalDateTime dateTime, 
-                       AppointmentState state, Agent createdBy) {
-        if (client == null || property == null || dateTime == null || state == null || createdBy == null) {
-            throw new IllegalArgumentException("All parameters must be non-null.");
-        }
-=======
     // Constructeur principal
     public Appointment( LocalDateTime dateTime, AppointmentState state, Worker createdBy) {
                         if (dateTime == null) throw new IllegalArgumentException("DateTime cannot be null.");
@@ -26,7 +19,6 @@ public class Appointment {
                         }
                         if (state == null) throw new IllegalArgumentException("State cannot be null.");
                         if (createdBy == null) throw new IllegalArgumentException("CreatedBy (Worker) cannot be null.");
->>>>>>> e38fa1a66123312a2f1492f3b31ab77529c7fca7
 
         this.idAppointment = IDGenerator.generateAppointmentID();
         this.dateTime = dateTime;
