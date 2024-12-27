@@ -9,7 +9,7 @@ public class Appointment {
     private LocalDateTime dateTime; 
     private AppointmentState state; 
     private LocalDateTime createdAt; // When the appointment was created
-    private Agent createdBy; // Worker who created the appointment
+    private Worker createdBy; // Worker who created the appointment
     
     // Constructeur principal
     public Appointment( LocalDateTime dateTime, AppointmentState state, Worker createdBy) {
@@ -56,7 +56,7 @@ public class Appointment {
         return createdAt;
     }  //il n'y a pas de setter pour createdAt 
 
-    public Agent getCreatedBy() {
+    public Worker getCreatedBy() {
         return createdBy;
     }
 
