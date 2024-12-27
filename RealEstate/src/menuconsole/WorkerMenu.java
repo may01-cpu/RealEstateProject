@@ -3,18 +3,18 @@ package menuconsole;
 import model.Client;
 import model.ClientType;
 import model.UserType;
-import model.Worker;
+import model.Agent;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class WorkerMenu {
 
-    private Worker agent;
+    private Agent agent;
     private ArrayList<Client> clients;
 
     public WorkerMenu() {
         // Initialize the agent and clients list
-        this.agent = new Worker("Alice", "Johnson", "alice@realestate.com", "987654321", "password", "A123", "XYZ Realty");
+        this.agent = new Agent("Alice", "Johnson", "alice@realestate.com", "987654321", "password", "A123", "XYZ Realty");
         this.clients = new ArrayList<>();
     }
 

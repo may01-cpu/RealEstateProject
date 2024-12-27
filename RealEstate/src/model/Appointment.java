@@ -3,14 +3,13 @@ package model;
 import java.time.LocalDateTime;
 import utils.IDGenerator;
 
-
 public class Appointment {
 
-    private String idAppointment; 
+    private String idAppointment;   //id client?/
     private LocalDateTime dateTime; 
     private AppointmentState state; 
     private LocalDateTime createdAt; // When the appointment was created
-    private Worker createdBy; // Worker who created the appointment 
+    private Agent createdBy; // Worker who created the appointment
     
     // Constructeur principal
     public Appointment( LocalDateTime dateTime, AppointmentState state, Worker createdBy) {
@@ -57,7 +56,7 @@ public class Appointment {
         return createdAt;
     }  //il n'y a pas de setter pour createdAt 
 
-    public Worker getCreatedBy() {
+    public Agent getCreatedBy() {
         return createdBy;
     }
 
