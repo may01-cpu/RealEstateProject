@@ -10,24 +10,22 @@ public class User {
     private UserType userType;
     
 
-<<<<<<< HEAD
-    public User(String id, String firstName, String lastName, String email, String phoneNumber, String password) {
 
-=======
+
     public User(String id, String firstName, String lastName, String email, String phoneNumber, String password, UserType userType) {
         this.id = id;
->>>>>>> 383f3d1f4ae8b643ca0c148cf3042e351728c5a7
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
-<<<<<<< HEAD
+
         this.id = id;
     
-=======
+
         this.userType = userType;
->>>>>>> 383f3d1f4ae8b643ca0c148cf3042e351728c5a7
+
     }
 
   

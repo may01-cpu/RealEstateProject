@@ -7,7 +7,7 @@ import model.AppointmentState;
 import model.Worker;
 
 public class AppointmentService {
-    private ArrayList<Appointment> AppList = new ArrayList<>(100);
+    private  ArrayList<Appointment> AppList = new ArrayList<>(100);
 
     // Méthode pour créer un rendez-vous
     public void createAppointment(LocalDateTime dateTime, AppointmentState state, Worker createdBy) {
@@ -43,6 +43,7 @@ public class AppointmentService {
         for (Appointment appointment : AppList) {
             System.out.println(appointment);
         }
+        //Approve or reject an appointment??
     }
 }
 

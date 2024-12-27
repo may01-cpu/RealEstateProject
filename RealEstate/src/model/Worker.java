@@ -1,10 +1,11 @@
 package model;
 
-public class Agent extends User {
+public class Worker extends User  {
+
     private String role;
 
-    public Agent(String firstName, String lastName, String email, String phoneNum, String password, String id, String role) {
-        super(firstName, lastName, email, phoneNum, password, id);
+    public Worker(String firstName, String lastName, String email, String phoneNum, String password, String id, String role ) {
+        super(firstName, lastName, email, phoneNum, password, id ,UserType.WORKER);
         this.role = role;
     }
 

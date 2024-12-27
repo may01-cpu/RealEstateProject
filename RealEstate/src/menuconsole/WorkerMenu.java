@@ -63,7 +63,7 @@ public class WorkerMenu {
         String phoneNum = scanner.nextLine();
         System.out.print("Enter Password: ");
         String password = scanner.nextLine();
-        System.out.print("Enter Client ID: ");
+        System.out.print("Enter Client ID: "); //id generator
         String id = scanner.nextLine();
 
         System.out.println("Select Client Type (1. BAILLEUR, 2. ACHETEUR, 3. LOCATAIRE, 4. VENDEUR): ");

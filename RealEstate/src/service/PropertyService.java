@@ -1,18 +1,17 @@
 package service;
 
-import model.Property;
-import model.PropertyFiltration;
-
+import model.*;
+import utils.IDGenerator;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class PropertyService implements propertyinter {
 
-    // IdProperty|Type|Size |Price|location|Stat|LegalStat
-    
+
     private List<Property> properties = new ArrayList<>();
-    private static final String FILE_PATH = "resources/property.txt";
+    private static final String FILE_PATH = "RealEstate/recources/property.txt";
 
     public PropertyService() {
         loadProperties();
@@ -48,10 +47,20 @@ public class PropertyService implements propertyinter {
             for (Property property : properties) {
                 pw.println(property.toFileFormat());
             }
-            System.out.println("Properties saved.");
+
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
+    }
+
+    private void  saveProperty(Property property) {
+            try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH))) {
+                    pw.println(property.toFileFormat());
+
+             }
+            catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+            }
     }
 
     // Print all properties
@@ -64,27 +73,123 @@ public class PropertyService implements propertyinter {
     }
 
     @Override
-    public void addProperty(Property property) {
+    public void addProperty() {
 
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter Property Type ( STUDIO,F2,F3,F4,F5,DUPLEX,R1,R2,R3): ");
+        PropertyType type = PropertyType.valueOf(scan.nextLine().toUpperCase());
+
+        System.out.println("enter the size:");
+        double size=scan.nextDouble();
+
+        System.out.println("enter the price:");
+        double price=scan.nextDouble();
+
+        System.out.println("enter wilaya :");
+        String wilaya= scan.nextLine();
+        System.out.println("enter dayra :");
+        String dayra= scan.nextLine();
+        System.out.println("enter city :");
+        String city= scan.nextLine();
+        System.out.println("enter street :");
+        String street= scan.nextLine();
+
+
+        System.out.println("Do you wanna Offer the property:");
+        System.out.println("1. for Sale");
+        System.out.println("2. for rent");
+        int Choice = scan.nextInt();
+        PropertyStat stat = switch (Choice) {
+            case 1 -> PropertyStat.FOR_SALE;
+            case 2 -> PropertyStat.FOR_RENT;
+            default -> {
+                System.out.println("Invalid state.");
+                yield null;
+            }
+        };
+
+        System.out.println("Enter the new Property Legal State:\n-NEW\n-UNDER_CONSTRUCTION\n-RENOVATED\n-GOOD_CONDITION\n-DILAPIDATED\n-NEEDS_REPAIRS");
+        PropertyLegalStat legalstat=PropertyLegalStat.valueOf(scan.nextLine().toUpperCase());
+
+        String id= IDGenerator.generateID("P");
+        Property p=new Property(id,type,size,price,new Address(wilaya,dayra,city,street),stat,legalstat);
+        properties.add(p);
+        saveProperty(p);
     }
 
     @Override
-    public void updateProperty(Property property) {
+    public void updateProperty(String propertyId) {
+        Scanner scan = new Scanner(System.in);
+        Property property =properties.stream().filter(p ->p.getIdProperty() .equals(propertyId)).findFirst().orElse(null);
 
+        if (property == null) {
+            System.out.println("Property not found !");
+            return;
+        }
+
+        System.out.println("What would you like to update?");
+        System.out.println("1.Price\n2.State\n3.Legal State\n");
+        int choice = scan.nextInt();
+        scan.nextLine();
+
+        switch (choice) {
+            case 1:
+                System.out.print("Enter the new price : ");
+                double newPrice = scan.nextDouble();
+                    property.setPrice(newPrice);
+                    System.out.println("Price updated successfully!");
+                break;
+            case 2:
+                System.out.print("Enter the new state (RENTED,FOR_SALE,SOLD,FOR_RENT) : ");
+                PropertyStat stat=PropertyStat.valueOf(scan.nextLine().toUpperCase());
+                property.setStat(stat);
+                System.out.println("Property state updated successfully!");
+                break;
+            case 3:  // Update Client Type
+                System.out.println("Enter the new Property Legal State:\n-NEW\n-UNDER_CONSTRUCTION\n-RENOVATED\n-GOOD_CONDITION\n-DILAPIDATED\n-NEEDS_REPAIRS");
+                PropertyLegalStat legalstat=PropertyLegalStat.valueOf(scan.nextLine().toUpperCase());
+                System.out.println("Property legal state updated successfully!");
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                return;
+        }
+
+        for(int i=0;i<=properties.size();i++) {
+            if(properties.get(i).getIdProperty().equals(propertyId)) {
+                properties.set(i, property);
+                break;
+            }
+        }
+
+        saveProperties();
     }
 
     @Override
-    public void deleteProperty(int propertyId) {
+    public void deleteProperty(String propertyId) {
+        Property ToDelete = properties.stream().filter(p -> p.getIdProperty().equals(propertyId)).findFirst().orElse(null);
 
+        if (ToDelete == null) {
+            System.out.println("Property not found.");
+            return;
+        }
+
+        properties.remove(ToDelete);
+        saveProperties();
+        System.out.println("Property deleted successfully.");
     }
 
+
+    
     @Override
-    public Property getPropertyDetails(int propertyId) {
+    public Property getPropertyDetails(String propertyId) {
         return null;
     }
 
     @Override
     public List<Property> searchProperties(PropertyFiltration criteria) {
+
         return List.of();
     }
 
@@ -92,3 +197,5 @@ public class PropertyService implements propertyinter {
 
 
 }
+
+
