@@ -1,6 +1,5 @@
 package menuconsole;
 
-import service.UserService;
 import model.User;
 import java.util.Scanner;
 
