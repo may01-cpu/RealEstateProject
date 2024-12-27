@@ -11,8 +11,6 @@ public class User {
     
 
 
-    public User(String id, String firstName, String lastName, String email, String phoneNumber, String password) {
-
 
     public User(String id, String firstName, String lastName, String email, String phoneNumber, String password, UserType userType) {
         this.id = id;

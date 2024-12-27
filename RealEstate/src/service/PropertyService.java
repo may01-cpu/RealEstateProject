@@ -10,6 +10,7 @@ import java.util.List;
 public class PropertyService implements propertyinter {
 
     // IdProperty|Type|Size |Price|location|Stat|LegalStat
+
     private List<Property> properties = new ArrayList<>();
     private static final String FILE_PATH = "resources/property.txt";
 

@@ -2,26 +2,6 @@ package model;
 
 public class Property {
 
-	public record Address(String wilaya, String dayra, String city, String street) {
-
-		public Address(String wilaya, String dayra, String city, String street) {
-			this.wilaya = wilaya;
-			this.dayra = dayra;
-			this.city = city;
-			this.street = street;
-		}
-
-		// Static method to create Address from a string
-		public static Address fromString(String addressStr) {
-			String[] parts = addressStr.split(",", 4);
-			return new Address(
-					parts.length > 0 ? parts[0].trim() : "",
-					parts.length > 1 ? parts[1].trim() : "",
-					parts.length > 2 ? parts[2].trim() : "",
-					parts.length > 3 ? parts[3].trim() : ""
-			);
-		}
-	}
 
     private PropertyType Type;
     private double Size;
@@ -103,21 +83,6 @@ public class Property {
 
     // Deserialize from file format
     public static Property fromFileFormat(String line) {
-<<<<<<< HEAD
-		String[] parts = line.split("|", 7); // Split into 7 parts
-		if (parts.length == 7) {
-			return new Property(parts[0].trim(),
-					   PropertyType.valueOf(parts[1].trim()), // Parse to double
-					   Double.parseDouble(parts[2].trim()), // Parse to double
-					   Double.parseDouble(parts[3].trim()), // Assuming it's a String
-					   Address.fromString(parts[4].trim()), // Assuming it's an enum
-					   PropertyStat.valueOf(parts[5].trim()), // Assuming it's an enum
-					   PropertyLegalStat.valueOf(parts[6].trim()) // Parse to boolean
-               );
-		}
-		throw new IllegalArgumentException("Invalid property line: " + line);
-	}
-=======
         String[] parts = line.split("|", 7); // Split into 7 parts
         if (parts.length == 7) {
             return new Property(parts[0].trim(),
@@ -131,5 +96,5 @@ public class Property {
         }
         throw new IllegalArgumentException("Invalid property line: " + line);
     }
->>>>>>> bbe91b0b3afe8051971871af7cac10193129bedc
 }
+
