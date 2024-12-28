@@ -1,11 +1,11 @@
 package model;
 
-public record Address(String wilaya, String dayra, String city, String street) {
+public record Address(String country, String wilaya, String dayra, String street) {
 
-    public Address(String wilaya, String dayra, String city, String street) {
+    public Address( String country, String wilaya, String dayra,String street) {
+        this.country = country;
         this.wilaya = wilaya;
         this.dayra = dayra;
-        this.city = city;
         this.street = street;
     }
     // Static method to create Address from a string
@@ -19,4 +19,8 @@ public record Address(String wilaya, String dayra, String city, String street) {
         );
     }
 
+    @Override
+    public String toString() {
+        return country + ',' + wilaya + ','+ dayra +',' + street;
+    }
 }

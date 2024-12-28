@@ -80,19 +80,19 @@ public class PropertyService implements propertyinter {
         System.out.print("Enter Property Type ( STUDIO,F2,F3,F4,F5,DUPLEX,R1,R2,R3): ");
         PropertyType type = PropertyType.valueOf(scan.nextLine().toUpperCase());
 
-        System.out.println("enter the size:");
+        System.out.println("Enter the size:");
         double size=scan.nextDouble();
 
-        System.out.println("enter the price:");
+        System.out.println("Enter the price:");
         double price=scan.nextDouble();
 
-        System.out.println("enter wilaya :");
+        System.out.println("Enter country :");
+        String country= scan.nextLine();
+        System.out.println("Enter wilaya :");
         String wilaya= scan.nextLine();
-        System.out.println("enter dayra :");
+        System.out.println("Enter dayra :");
         String dayra= scan.nextLine();
-        System.out.println("enter city :");
-        String city= scan.nextLine();
-        System.out.println("enter street :");
+        System.out.println("Enter street :");
         String street= scan.nextLine();
 
 
@@ -113,7 +113,7 @@ public class PropertyService implements propertyinter {
         PropertyLegalStat legalstat=PropertyLegalStat.valueOf(scan.nextLine().toUpperCase());
 
         String id= IDGenerator.generateID("P");
-        Property p=new Property(id,type,size,price,new Address(wilaya,dayra,city,street),stat,legalstat);
+        Property p=new Property(id,type,size,price,new Address(country,wilaya,dayra,street),stat,legalstat);
         properties.add(p);
         saveProperty(p);
     }
@@ -181,16 +181,32 @@ public class PropertyService implements propertyinter {
     }
 
 
-    
     @Override
-    public Property getPropertyDetails(String propertyId) {
-        return null;
+    public void getPropertyDetails(String propertyId) {
+        Property property = properties.stream().filter(p -> p.getIdProperty().equals(propertyId)).findFirst().orElse(null);
+       if(property==null){
+         System.out.println("Property not found");
+         return;
+       }
+        System.out.println("Property details :");
+        property.toString();
     }
 
+//Address location, Integer minPrice, Integer maxPrice, Integer minSize,PropertyType type
     @Override
-    public List<Property> searchProperties(PropertyFiltration criteria) {
+    public void searchPropertiesByFiltration() {
+        Scanner scan=new Scanner(System.in);
+        System.out.println("Enter the min size:");
+        double minSize=scan.nextDouble();
+        System.out.println("Enter the min price:");
+        double minPrice=scan.nextDouble();
+        System.out.println("Enter the max price:");
+        double maxPrice=scan.nextDouble();
+        System.out.print("Enter Property Type ( STUDIO,F2,F3,F4,F5,DUPLEX,R1,R2,R3): ");
+        PropertyType type = PropertyType.valueOf(scan.nextLine().toUpperCase());
 
-        return List.of();
+        PropertyFiltration criteria=new PropertyFiltration(minPrice,maxPrice,minSize,type);
+        criteria.printFilteredProperties(criteria.filterProperties(properties));
     }
 
 

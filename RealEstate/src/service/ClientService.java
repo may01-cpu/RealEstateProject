@@ -13,6 +13,9 @@ public class ClientService {
 
     private static final String CLIENT_FILE = "clients.csv";  // CSV file to store clients
 
+    public ClientService() {
+    }
+
     // Method to add a new client
     public void addClient() {
         Scanner scanner = new Scanner(System.in);

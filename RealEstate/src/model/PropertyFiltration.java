@@ -5,13 +5,12 @@ import java.util.List;
 
 public class PropertyFiltration {
     private PropertyType type;
-    private int minSize;
+    private double minSize;
     private double minPrice;
     private double maxPrice;
-    private Address location;
 
-    public PropertyFiltration(Address location, Integer minPrice, Integer maxPrice, Integer minSize,PropertyType type) {
-        this.location = location;
+    public PropertyFiltration(double minPrice, double maxPrice, double minSize,PropertyType type) {
+
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.minSize = minSize;
@@ -23,10 +22,6 @@ public class PropertyFiltration {
 
         for (Property property : properties) {
             boolean matches = true;
-
-            if (location != null && !property.getLocation().equals(location)) {
-                matches = false;
-            }
 
             if (minPrice !=0 && property.getPrice() < minPrice) {
                 matches = false;
@@ -50,6 +45,14 @@ public class PropertyFiltration {
         }
 
         return filteredProperties;
+    }
+
+    public void printFilteredProperties(List<Property> properties){
+        if (properties.isEmpty()) {
+            System.out.println("No properties fit this criteria");
+        } else {
+            properties.forEach(System.out::println);
+        }
     }
 
 }
