@@ -3,18 +3,19 @@ package menuconsole;
 import model.Client;
 import model.ClientType;
 import model.UserType;
-import model.Agent;
+import model.Worker;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class WorkerMenu {
 
-    private Agent agent;
+    private Worker worker;
     private ArrayList<Client> clients;
 
     public WorkerMenu() {
         // Initialize the agent and clients list
-        this.agent = new Agent("Alice", "Johnson", "alice@realestate.com", "987654321", "password", "A123", "XYZ Realty");
+        this.worker = new Worker("Alice", "Johnson", "alice@realestate.com", "987654321", "password", "A123", "XYZ Realty");
         this.clients = new ArrayList<>();
     }
 
@@ -96,7 +97,7 @@ public class WorkerMenu {
         if (client != null) {
             System.out.print("Enter Property Details: ");
             String property = scanner.nextLine();
-            agent.assignProperty(client, property);
+            worker.assignProperty(client, property);
         } else {
             System.out.println("Client not found!");
         }

@@ -3,6 +3,7 @@ package service;
 import model.Client;
 import model.ClientType;
 import model.UserType;
+import utils.IDGenerator;
 
 import java.io.*;
 import java.util.*;
@@ -11,6 +12,9 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     private static final String CLIENT_FILE = "clients.csv";  // CSV file to store clients
+
+    public ClientService() {
+    }
 
     // Method to add a new client
     public void addClient() {
@@ -32,7 +36,7 @@ public class ClientService {
 
         // Check if email is unique
         if (isEmailUnique(email)) {
-            String id = IdGenerator.generateId(); // Assuming IdGenerator generates unique IDs
+            String id = IDGenerator.generateID("C"); // Assuming IdGenerator generates unique IDs
             Client client = new Client(id, firstName, lastName, email, phoneNumber, password, UserType.CLIENT, clientType);
 
             // Save client to CSV

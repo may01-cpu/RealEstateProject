@@ -1,17 +1,21 @@
 package menuconsole;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import model.Client;
 import model.Property;
+import service.PropertyService;
 
 public class ClientMenu {
     private Client client ;
+    private PropertyService propertyService;
     private ArrayList<Property>properties;
 
-    public ClientMenu(Client client){
+    public ClientMenu(Client client, PropertyService propertyService){
         this.client=client;
+        this.propertyService = propertyService;
         this.properties= new ArrayList<>();
         initializeProperties();
     }
@@ -39,10 +43,10 @@ public class ClientMenu {
                 viewAssignedProperties();
                 break;
                 case 4:
-                System.out.println("Exiting...");
+                System.out.println("Exiting");
                 return;
                 default:
-                System.out.println("Invalid choice! Try again.");
+                System.out.println("Invalid choice.");
             }
         }
     }
@@ -69,25 +73,62 @@ public class ClientMenu {
             break;
         case 2 :
             System.out.print("Enter maximum price: ");
-            criteria = scanner.nextLine();
+            criteria= scanner.nextLine();
             break;
         case 3:
             System.out.print("Enter property type (e.g., Apartment, House): ");
             criteria = scanner.nextLine();
             break;
         default:
-            System.out.println("Invalid choice! Returning to menu.");
+            System.out.println("Invalid choice.");
             return;
           }
           System.out.println("\n--- Search Results---");
           boolean found = false;
-          
-     
-
-
+          for (Property property : propertyService.getProperties()) { 
+            if (matchesCriteria(property, choice, criteria)) {
+                System.out.println(property); 
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No properties found matching the criteria.");
         }
     }
 
+    private boolean matchesCriteria(Property property, int choice, String criteria) {
+        switch (choice) {
+            case 1: 
+                return property.getLocation().toString().toLowerCase().contains(criteria.toLowerCase());
+            case 2: 
+                return property.getPrice() <= Double.parseDouble(criteria);
+            case 3: 
+                return property.getType().toString().equalsIgnoreCase(criteria);
+            default:
+                return false;
+        }
+    }
 
+    private void viewAssignedProperties() {
+        System.out.println("\n--- Assigned Properties ---");
+        if (properties.isEmpty()) {
+            System.out.println("No properties assigned to you.");
+        } else {
+            for (Property property : properties) {
+                System.out.println(property); 
+            }
+        }
+    }
 
+    private void initializeProperties() {
+    List<Property> allProperties = propertyService.getProperties();
+
+    
+    for (Property property : allProperties) {
+        if (property.getAssignedClientId().equals(client.getId())) { 
+            properties.add(property); 
+        }
+    }
 }
+}
+    
