@@ -20,7 +20,7 @@ public class Appointment {
                         if (state == null) throw new IllegalArgumentException("State cannot be null.");
                         if (createdBy == null) throw new IllegalArgumentException("CreatedBy (Worker) cannot be null.");
 
-        this.idAppointment = IDGenerator.generateAppointmentID();
+        this.idAppointment = IDGenerator.generateID("A");
         this.dateTime = dateTime;
         this.state = state;
         this.createdAt = LocalDateTime.now();
