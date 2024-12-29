@@ -1,12 +1,8 @@
 package menuconsole;
 
-import model.Client;
-import model.ClientType;
 import service.ClientService;
 import utils.ConsoleUtils;
-
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class RegisterationMenu {
 
@@ -24,12 +20,13 @@ public class RegisterationMenu {
 
             switch (choice) {
                 case 1 : registerClient(scanner,clientService);
+                         ConsoleUtils.pause("Press any key to go back to main menu...");
                     break;
                 case 2 : {
                     ConsoleUtils.showLoading("Returning to Main Menu",3);
                     return;
                 }
-                default : System.out.println("Invalid choice. Please try again.");
+                default : System.out.println("Invalid choice! Please try again ");
                     break;
             }
         }
