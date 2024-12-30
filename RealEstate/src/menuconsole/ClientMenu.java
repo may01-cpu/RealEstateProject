@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import model.Client;
 import model.Property;
+import service.AppointmentService;
 import service.PropertyService;
 
 public class ClientMenu {
@@ -27,7 +28,8 @@ public class ClientMenu {
             System.out.println("1. View My Information");
             System.out.println("2. Search Properties");
             System.out.println("3. View Assigned Properties");
-            System.out.println("4. Exit");
+            System.out.println("4. Manage My Appointments ");
+            System.out.println("5. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -43,10 +45,14 @@ public class ClientMenu {
                 viewAssignedProperties();
                 break;
                 case 4:
+                manageAppointments(scanner);
+                    return;
+                case 5:    
                 System.out.println("Exiting");
-                return;
+                    return;
                 default:
                 System.out.println("Invalid choice.");
+                break;
             }
         }
     }
@@ -128,6 +134,30 @@ public class ClientMenu {
         if (property.getAssignedClientId().equals(client.getId())) { 
             properties.add(property); 
         }
+    }
+}
+
+//methode for manageAppointments
+private void manageAppointments(Scanner scanner) {
+    AppointmentService appointmentService = new AppointmentService();
+
+    System.out.println("\n--- Manage My Appointments ---");
+    System.out.println("1. View My Appointments");
+    System.out.println("2. Cancel Appointment");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine(); // Consume newline
+    
+    switch (choice) {
+        case 1:
+            appointmentService.viewAppointmentsForClient(client.getId()); // Display client's appointments
+            break;
+        case 2:
+            appointmentService.removeAppointment( scanner); // Remove specific appointment by ID
+            break;
+        default:
+            System.out.println("Invalid choice.");
+            break;
     }
 }
 }

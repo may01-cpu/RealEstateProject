@@ -1,12 +1,12 @@
 package menuconsole;
 
+import java.util.ArrayList;
+import java.util.Scanner;
 import model.Client;
 import model.ClientType;
 import model.UserType;
 import model.Worker;
-
-import java.util.ArrayList;
-import java.util.Scanner;
+import service.AppointmentService;
 
 public class WorkerMenu {
 
@@ -28,7 +28,8 @@ public class WorkerMenu {
             System.out.println("1. Add Client");
             System.out.println("2. Assign Property to Client");
             System.out.println("3. Display Clients");
-            System.out.println("4. Exit");
+            System.out.println("4. Manage Appointments");
+            System.out.println("5. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character after the int input
@@ -44,6 +45,9 @@ public class WorkerMenu {
                     displayClients();
                     break;
                 case 4:
+                    manageAppointments(scanner);
+                    return;
+                case 5:
                     System.out.println("Exiting...");
                     return;
                 default:
@@ -110,4 +114,42 @@ public class WorkerMenu {
             System.out.println(client.getFirstName() + " " + client.getLastName() + " - Type: " + client.getType());
         }
     }
+    // Methode for manage appointment
+   // Inside WorkerMenu.java
+private void manageAppointments(Scanner scanner) {
+    AppointmentService appointmentService = new AppointmentService();
+
+    System.out.println("\n--- Manage Appointments ---");
+    System.out.println("1. Create Appointment");
+    System.out.println("2. Update Appointment State");
+    System.out.println("3. Cancel Appointment");
+    System.out.println("4. View Appointments for a Client");
+    System.out.println("5. view all Appointments");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine(); // Consume newline
+    
+    switch (choice) {
+        case 1:
+            appointmentService.createAppointment(scanner, worker); // Use the worker as the creator
+            break;
+        case 2:
+            appointmentService.updateAppointmentState(scanner); // Update an appointment
+            break;
+        case 3:
+            appointmentService.removeAppointment(scanner); // Cancel an appointment
+            break;
+        case 4:
+            System.out.print("Enter Client ID: ");
+            String clientId = scanner.nextLine();
+            appointmentService.viewAppointmentsForClient(clientId); // Display appointments for a client (implement this method if needed)
+            break;
+        case 5:
+            appointmentService.listAppointments();
+            break;
+        default:
+            System.out.println("Invalid choice.");
+            break;
+    }
+}
 }
