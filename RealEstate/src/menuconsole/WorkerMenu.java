@@ -2,21 +2,20 @@ package menuconsole;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import model.Client;
-import model.ClientType;
-import model.UserType;
-import model.Worker;
+
+import model.*;
 import service.AppointmentService;
+import service.ClientService;
+import service.PropertyService;
+import utils.ConsoleUtils;
 
 public class WorkerMenu {
 
     private Worker worker;
-    private ArrayList<Client> clients;
+
 
     public WorkerMenu() {
-        // Initialize the agent and clients list
-        this.worker = new Worker("Alice", "Johnson", "alice@realestate.com", "987654321", "password", "A123", "XYZ Realty");
-        this.clients = new ArrayList<>();
+         displayMenu();
     }
 
     // Method to display the worker menu and handle operations
@@ -25,9 +24,9 @@ public class WorkerMenu {
 
         while (true) {
             System.out.println("\n--- Worker Menu ---");
-            System.out.println("1. Add Client");
-            System.out.println("2. Assign Property to Client");
-            System.out.println("3. Display Clients");
+            System.out.println("1. Manage Properties");
+            System.out.println("2. Manage Clients");
+            System.out.println("3. Manage Transactions");
             System.out.println("4. Manage Appointments");
             System.out.println("5. Exit");
 
@@ -36,86 +35,127 @@ public class WorkerMenu {
 
             switch (choice) {
                 case 1:
-                    addClient(scanner);
+                    manageProperties(scanner);
                     break;
                 case 2:
-                    assignPropertyToClient(scanner);
+                    manageClients(scanner);
                     break;
                 case 3:
-                    displayClients();
+                    manageTransactions(scanner);
                     break;
                 case 4:
-                    manageAppointments(scanner);
-                    return;
+                      manageAppointments(scanner);
+                    break;
                 case 5:
-                    System.out.println("Exiting...");
+                    ConsoleUtils.showLoading("Exiting",3);
                     return;
                 default:
                     System.out.println("Invalid choice! Try again.");
+                    break;
             }
         }
     }
 
-    // Method to add a new client
-    private void addClient(Scanner scanner) {
-        System.out.print("Enter First Name: ");
-        String firstName = scanner.nextLine();
-        System.out.print("Enter Last Name: ");
-        String lastName = scanner.nextLine();
-        System.out.print("Enter Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter Phone Number: ");
-        String phoneNum = scanner.nextLine();
-        System.out.print("Enter Password: ");
-        String password = scanner.nextLine();
-        System.out.print("Enter Client ID: "); //id generator
-        String id = scanner.nextLine();
+    private void manageProperties(Scanner scanner){
+        PropertyService propertyService = new PropertyService();
 
-        System.out.println("Select Client Type (1. BAILLEUR, 2. ACHETEUR, 3. LOCATAIRE, 4. VENDEUR): ");
-        int clientTypeChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline
+        System.out.println("\n--- Manage Properties ---");
+        System.out.println("1. View Properties List");
+        System.out.println("2. Add Property");
+        System.out.println("3. Update Property");
+        System.out.println("4. Delete Property");
+        System.out.println("5. Search Properties");
+        System.out.println("6. Get Property details");
+        System.out.println("7. Exit");
 
-        ClientType clientType = ClientType.values()[clientTypeChoice - 1]; // Get ClientType
-        UserType userType = UserType.CLIENT; // Use UserType.CLIENT
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
-        // Create and add the client to the list
-        Client newClient = new Client(id, firstName, lastName, email, phoneNum, password, userType, clientType);
-        clients.add(newClient);
-        System.out.println("Client added successfully!");
-    }
-
-
-    // Method to assign a property to a client
-    private void assignPropertyToClient(Scanner scanner) {
-        System.out.println("Enter the Client ID to assign a property:");
-        String clientId = scanner.nextLine();
-
-        Client client = null;
-        for (Client c : clients) {
-            if (c.getId().equals(clientId)) {
-                client = c;
+        switch (choice) {
+            case 1:
+                ConsoleUtils.clearConsole();
+               propertyService.printProperties();
                 break;
-            }
-        }
-
-        if (client != null) {
-            System.out.print("Enter Property Details: ");
-            String property = scanner.nextLine();
-            worker.assignProperty(client, property);
-        } else {
-            System.out.println("Client not found!");
+            case 2:
+                ConsoleUtils.clearConsole();
+                propertyService.addProperty();
+                break;
+            case 3:
+                ConsoleUtils.clearConsole();
+                System.out.print("Enter Property ID: ");
+                String propertyId = scanner.nextLine();
+                propertyService.updateProperty(propertyId);
+                break;
+            case 4:
+                System.out.print("Enter Property ID: ");
+                String propId = scanner.nextLine();
+                propertyService.deleteProperty(propId);
+                break;
+            case 5:
+                ConsoleUtils.clearConsole();
+                propertyService.searchPropertiesByFiltration();
+                break;
+            case 6:
+                ConsoleUtils.clearConsole();
+                System.out.print("Enter Property ID: ");
+                String proId = scanner.nextLine();
+                propertyService.getPropertyDetails(proId);
+                break;
+            case 7:
+                ConsoleUtils.showLoading("Returning to worker menu",2);
+                return;
+            default:
+                System.out.println("Invalid choice.");
+                break;
         }
     }
 
-    // Method to display all clients
-    private void displayClients() {
-        System.out.println("\n--- Clients List ---");
-        for (Client client : clients) {
-            System.out.println(client.getFirstName() + " " + client.getLastName() + " - Type: " + client.getType());
+    private void manageClients(Scanner scanner){
+        ClientService clientService = new ClientService();
+
+        System.out.println("\n--- Manage Clients ---");
+        System.out.println("1. View All Clients");
+        System.out.println("2. Add Client");
+        System.out.println("3. Update Client");
+        System.out.println("4. Delete Client");
+        System.out.println("5. Exit");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                ConsoleUtils.clearConsole();
+                clientService.viewAllClients();
+                break;
+            case 2:
+                ConsoleUtils.clearConsole();
+                clientService.addClient();
+                break;
+            case 3:
+                System.out.print("Enter Property ID: ");
+                String cId = scanner.nextLine();
+                clientService.updateClient(cId);
+                break;
+            case 4:
+                ConsoleUtils.clearConsole();
+                System.out.print("Enter Client ID: ");
+                String clientId = scanner.nextLine();
+                clientService.deleteClient(clientId);
+                break;
+            case 5:
+                ConsoleUtils.showLoading("Returning to worker menu",2);
+                return;
+            default:
+                System.out.println("Invalid choice.");
+                break;
         }
     }
-    // Methode for manage appointment
-   // Inside WorkerMenu.java
+
+    private void manageTransactions(Scanner scanner){
+
+    }
+
 private void manageAppointments(Scanner scanner) {
     AppointmentService appointmentService = new AppointmentService();
 
@@ -125,6 +165,7 @@ private void manageAppointments(Scanner scanner) {
     System.out.println("3. Cancel Appointment");
     System.out.println("4. View Appointments for a Client");
     System.out.println("5. view all Appointments");
+    System.out.println("6. Exit");
 
     int choice = scanner.nextInt();
     scanner.nextLine(); // Consume newline
@@ -147,9 +188,13 @@ private void manageAppointments(Scanner scanner) {
         case 5:
             appointmentService.listAppointments();
             break;
+        case 6:
+            ConsoleUtils.showLoading("Returning to worker menu",2);
+            return;
         default:
             System.out.println("Invalid choice.");
             break;
     }
 }
+
 }
