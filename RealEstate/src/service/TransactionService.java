@@ -3,10 +3,10 @@ package service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import model.Client;
+import model.Property;
 import model.Transaction;
 import model.TransactionType;
-import model.Property;
-import model.Client;
 
 public class TransactionService {
     private List<Transaction> transactions;
