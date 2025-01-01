@@ -14,6 +14,9 @@ public class ClientService {
 
     private static final String CLIENT_FILE = "clients.csv";  // CSV file to store clients
 
+    public ClientService() {
+    }
+
     // Method to add a new client
     public void addClient() {
         Scanner scanner = new Scanner(System.in);
@@ -34,6 +37,7 @@ public class ClientService {
 
         // Check if email is unique
         if (isEmailUnique(email)) {
+
             String id = IDGenerator.generateID("CLIENT"); // Pass "CLIENT" as the entity type
             Client client = new Client(id, firstName, lastName, email, phoneNumber, password, UserType.CLIENT, clientType);
 

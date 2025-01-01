@@ -71,8 +71,8 @@ public class Property {
 
     @Override
     public String toString() {
-        return "IdProperty=" + IdProperty + ",Type=" + Type + ", Size=" + Size + ", Price=" + Price + ", location=" + location
-                + ", Stat=" + Stat + ", LegalStat=" + LegalStat + "]";
+        return "\t-IdProperty :" + IdProperty + "\n\t-Type :" + Type + "\n\t-Size :" + Size + "\n\t-Price :" + Price + ",\n\t-location :" + location.toString()
+                + "\n\t-Stat:" + Stat + "\n\tLegalStat=" + LegalStat;
     }
 
     // Serialize to file format
