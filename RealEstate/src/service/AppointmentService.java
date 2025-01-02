@@ -14,7 +14,7 @@ import model.Worker;
 
 public class AppointmentService {
     private  ArrayList<Appointment> AppList = new ArrayList<>(100);
-    private final String APPOINTMENT_FILE = "appointments.dat";  // File name to store appointments
+    private final String APPOINTMENT_FILE = "src/recources/appointment.dat";  // File name to store appointments
     public AppointmentService() {
         // Initialize anything if needed
     }
