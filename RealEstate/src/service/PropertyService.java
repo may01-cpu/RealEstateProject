@@ -1,11 +1,11 @@
 package service;
 
-import model.*;
-import utils.IDGenerator;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import model.*;
+import utils.IDGenerator;
 
 public class PropertyService implements propertyinter {
 
@@ -17,7 +17,7 @@ public class PropertyService implements propertyinter {
         loadProperties();
     }
 
-    // Load properties from the file
+   
     private void loadProperties()  {
         File file = new File(FILE_PATH);
         if (file.exists()) {
@@ -40,8 +40,6 @@ public class PropertyService implements propertyinter {
             }
         }
     }
-
-    // Save properties to the file
     private void saveProperties() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH))) {
             for (Property property : properties) {
@@ -63,7 +61,7 @@ public class PropertyService implements propertyinter {
             }
     }
 
-    // Print all properties
+    
     public void printProperties() {
         if (properties.isEmpty()) {
             System.out.println("No properties to display.");
@@ -146,7 +144,7 @@ public class PropertyService implements propertyinter {
                 property.setStat(stat);
                 System.out.println("Property state updated successfully!");
                 break;
-            case 3:  // Update Client Type
+            case 3:  
                 System.out.println("Enter the new Property Legal State:\n-NEW\n-UNDER_CONSTRUCTION\n-RENOVATED\n-GOOD_CONDITION\n-DILAPIDATED\n-NEEDS_REPAIRS");
                 PropertyLegalStat legalstat=PropertyLegalStat.valueOf(scan.nextLine().toUpperCase());
                 System.out.println("Property legal state updated successfully!");
@@ -192,7 +190,7 @@ public class PropertyService implements propertyinter {
         property.toString();
     }
 
-//Address location, Integer minPrice, Integer maxPrice, Integer minSize,PropertyType type
+
     @Override
     public void searchPropertiesByFiltration() {
         Scanner scan=new Scanner(System.in);
