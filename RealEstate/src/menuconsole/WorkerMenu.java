@@ -1,13 +1,16 @@
 package menuconsole;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import model.*;
 import service.AppointmentService;
 import service.ClientService;
 import service.PropertyService;
+import service.TransactionService;
 import utils.ConsoleUtils;
+
 
 public class WorkerMenu {
 
@@ -152,11 +155,67 @@ public class WorkerMenu {
         }
     }
 
-    private void manageTransactions(Scanner scanner){
+    private void manageTransactions(Scanner scanner) {
+        TransactionService transactionService = new TransactionService();
 
+        System.out.println("\n--- Manage Transactions ---");
+        System.out.println("1. Create Transaction");
+        System.out.println("2. View Transaction by ID");
+        System.out.println("3. List All Transactions");
+        System.out.println("4. Exit");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                System.out.println("Enter transaction type ");
+                String type = scanner.nextLine();
+
+                System.out.println("Enter Property ID: ");
+                String propertyId = scanner.nextLine();
+
+                System.out.println("Enter Client ID: ");
+                String clientId = scanner.nextLine();
+
+                System.out.println("Enter Amount: ");
+                double amount = scanner.nextDouble();
+                scanner.nextLine();
+
+                System.out.println("Enter Transaction ID: ");
+                String transactionId = scanner.nextLine();
+
+                System.out.println("Enter Initiator ID: ");
+                String initiatorId = scanner.nextLine();
+
+                System.out.println("Enter Recipient ID: ");
+                String recipientId = scanner.nextLine();
+
+                transactionService.creerTransaction(TransactionType.valueOf(type), null, null, amount, transactionId, initiatorId, recipientId, new Date(), new Date());
+                break;
+
+            case 2:
+                System.out.print("Enter Transaction ID: ");
+                String transactionToView = scanner.nextLine();
+
+                transactionService.viewTransaction(transactionToView);
+                break;
+
+            case 3:
+                transactionService.afficherTransactions();
+                break;
+
+            case 4:
+                System.out.println("Returning to worker menu...");
+                return;
+
+            default:
+                System.out.println("Invalid choice.");
+                break;
+        }
     }
 
-private void manageAppointments(Scanner scanner) {
+    private void manageAppointments(Scanner scanner) {
     AppointmentService appointmentService = new AppointmentService();
 
     System.out.println("\n--- Manage Appointments ---");
