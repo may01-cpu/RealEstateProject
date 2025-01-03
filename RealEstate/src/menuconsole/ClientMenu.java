@@ -1,11 +1,11 @@
 package menuconsole;
 
+import java.util.Scanner;
 import model.Client;
-import service.PropertyService;
 import service.AppointmentService;
 import service.ClientService;
+import service.PropertyService;
 import service.TransactionService;
-import java.util.Scanner;
 
 public class ClientMenu {
     private PropertyService propertyService;
@@ -101,7 +101,7 @@ public class ClientMenu {
                 break;
             case 3:
 
-                appointmentService.listAppointments();
+                manageAppointments(scanner);
                 break;
             case 4:
 
@@ -117,4 +117,27 @@ public class ClientMenu {
                 System.out.println("Invalid choice.");
         }
     }
+    //methode for manageAppointments
+    private void manageAppointments(Scanner scanner) {
+    AppointmentService appointmentService = new AppointmentService();
+
+    System.out.println("\n--- Manage My Appointments ---");
+    System.out.println("1. View My Appointments");
+    System.out.println("2. Cancel Appointment");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine(); // Consume newline
+    
+    switch (choice) {
+        case 1:
+            appointmentService.viewAppointmentsForClient(client.getId()); // Display client's appointments
+            break;
+        case 2:
+            appointmentService.removeAppointment( scanner); // Remove specific appointment by ID
+            break;
+        default:
+            System.out.println("Invalid choice.");
+            break;
+    }
+}
 }
