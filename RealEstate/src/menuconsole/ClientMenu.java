@@ -36,7 +36,7 @@ public class ClientMenu {
                 System.out.println("Invalid client type.");
                 break;
         }
-        scanner.close();
+        
     }
 
 
@@ -117,27 +117,29 @@ public class ClientMenu {
                 System.out.println("Invalid choice.");
         }
     }
-    //methode for manageAppointments
     private void manageAppointments(Scanner scanner) {
-    AppointmentService appointmentService = new AppointmentService();
-
-    System.out.println("\n--- Manage My Appointments ---");
-    System.out.println("1. View My Appointments");
-    System.out.println("2. Cancel Appointment");
-
-    int choice = scanner.nextInt();
-    scanner.nextLine(); // Consume newline
+        System.out.println("\n--- Manage My Appointments ---");
+        System.out.println("1. View My Appointments");
+        System.out.println("2. Cancel Appointment");
     
-    switch (choice) {
-        case 1:
-            appointmentService.viewAppointmentsForClient(client.getId()); // Display client's appointments
-            break;
-        case 2:
-            appointmentService.removeAppointment( scanner); // Remove specific appointment by ID
-            break;
-        default:
-            System.out.println("Invalid choice.");
-            break;
+        try {
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+    
+            switch (choice) {
+                case 1:
+                    appointmentService.viewAppointmentsForClient(client.getId()); // Display client's appointments
+                    break;
+                case 2:
+                    appointmentService.removeAppointment(scanner); // Remove specific appointment by ID
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Invalid input. Please enter a number.");
+            scanner.nextLine(); // Clear invalid input
+        }
     }
-}
 }

@@ -12,53 +12,48 @@ import model.AppointmentState;
 import model.Worker;
 
 
-public class AppointmentService {
-    private  ArrayList<Appointment> AppList = new ArrayList<>(100);
-    private final String APPOINTMENT_FILE = "src/recources/appointment.dat";  // File name to store appointments
+
+public class AppointmentService implements IAppointmentService {
+    private  ArrayList<Appointment> AppList = new ArrayList<>();
+    private final String APPOINTMENT_FILE = "recources/appointment.dat";  // File name to store appointments
     public AppointmentService() {
         // Initialize anything if needed
     }
-
-
-    // Méthode pour créer un rendez-vous
+    @Override
     public void createAppointment(Scanner scanner, Worker createdBy) {
-
         System.out.println("\n--- Create Appointment ---");
-        // to read the datetime
+    
+        // Read and parse date and time
         System.out.print("Enter appointment date and time (yyyy-MM-dd HH:mm): ");
-        String dateTimeInput = scanner.nextLine();
         LocalDateTime dateTime;
-        //verification
         try {
-            dateTime = LocalDateTime.parse(dateTimeInput, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            dateTime = LocalDateTime.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         } catch (Exception e) {
             System.out.println("Error: Invalid date and time format.");
             return;
         }
+    
         if (dateTime.isBefore(LocalDateTime.now())) {
             System.out.println("Error: The appointment date must be in the future.");
             return;
         }
-
-        // the appointment state
-        AppointmentState state = AppointmentState.SCHEDULED;
-        // clientID
-        System.out.println("ID of the client");
+    
+        // Collect other details
+        System.out.print("Enter client ID: ");
         String clientID = scanner.nextLine();
-
-        Appointment newAppointment = new Appointment(dateTime, state, createdBy,clientID);
-        // Vérifie si l'ID est unique
-        for (Appointment appointment : AppList) {
-            if (appointment.getIdAppointment().equals(newAppointment.getIdAppointment())) {
-                System.out.println("Error: Appointment with this ID already exists.");
-                return;
-            }
+    
+        // Ensure unique ID is assigned
+        Appointment newAppointment = new Appointment(dateTime, AppointmentState.SCHEDULED, createdBy, clientID);
+    
+        if (AppList.stream().anyMatch(app -> app.getIdAppointment().equals(newAppointment.getIdAppointment()))) {
+            System.out.println("Error: Appointment with this ID already exists.");
+            return;
         }
-
-        // Ajouter le rendez-vous à la liste
+    
         AppList.add(newAppointment);
         System.out.println("Appointment created successfully: " + newAppointment);
     }
+    
 
     // Méthode pour lister tous les rendez-vous
     public void listAppointments() {
@@ -83,16 +78,22 @@ public class AppointmentService {
             System.out.println("Error saving appointments to file: " + e.getMessage());
         }
     }
-    // Load appointments from a file
-    @SuppressWarnings("unchecked")
     public void loadAppointmentsFromFile() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(APPOINTMENT_FILE))) {
+        File file = new File(APPOINTMENT_FILE);
+        if (!file.exists()) {
+            System.out.println("Appointment file not found. Creating a new one.");
+            saveAppointmentsToFile(); // Create an empty file
+            return;
+        }
+    
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             AppList = (ArrayList<Appointment>) ois.readObject();
             System.out.println("Appointments loaded from file.");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading appointments: " + e.getMessage());
         }
     }
+    
     // Remove an appointment by ID
     public void removeAppointment(Scanner scanner) {
         System.out.println("\n--- Remove Appointment ---");
