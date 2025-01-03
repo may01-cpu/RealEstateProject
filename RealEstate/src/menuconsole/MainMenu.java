@@ -17,13 +17,16 @@ public class MainMenu {
 
             switch (choice) {
                 case 1:
+                    ConsoleUtils.showLoading("Login",2);
                     LoginMenu loginMenu = new LoginMenu();
-                    loginMenu.login(); // Direct client to login
+                    loginMenu.login(); 
                     break;
                 case 2:
+                    ConsoleUtils.showLoading("Register as client",2);
                     RegisterationMenu.display(); // Direct client to registration menu
                     break;
                 case 3:
+                    ConsoleUtils.showLoading("Loading",2);
                     System.out.println("Thank you for using RealEstate Management System!");
                     return; // Exit the application
                 default:

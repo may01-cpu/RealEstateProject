@@ -1,11 +1,10 @@
 package menuconsole;
 
-import model.Client;
-import model.UserType;
-import model.ClientType;
-
 import java.io.*;
 import java.util.*;
+import model.Client;
+import model.ClientType;
+import model.UserType;
 
 public class LoginMenu {
 
@@ -22,7 +21,7 @@ public class LoginMenu {
 
         // Ask for password
         System.out.print("Enter Password: ");
-        String password = readPassword();
+        String password = scanner.nextLine(); // readpassword mamchatch
 
         // Try to authenticate as client first
         Client client = authenticateClient(identifier, password);
