@@ -7,7 +7,7 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            ConsoleUtils.printTitle("  welcome to Estatia! "); 
+            ConsoleUtils.printTitle("  MainMenu ! "); 
             System.out.println("1. Login ");
             System.out.println("2. Register as client");
             System.out.println("3. Exit");
