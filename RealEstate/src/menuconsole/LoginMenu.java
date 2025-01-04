@@ -1,198 +1,91 @@
 package menuconsole;
 
-import java.io.*;
-import java.util.*;
-import model.Client;
-import model.ClientType;
-import model.UserType;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.Console;
+import java.io.IOException;
+import utils.ConsoleUtils;
 
 public class LoginMenu {
 
-    private static final String CLIENT_FILE = "clients.csv";  // The CSV file for storing clients
-    private static final String WORKER_FILE = "workers.csv";  // The CSV file for storing workers
+    // File paths for storing client and worker data
+    private static final String CLIENT_FILE = "clients.csv";
+    private static final String WORKER_FILE = "workers.csv";
 
-    // Method to log in
-    public void login() {
-        Scanner scanner = new Scanner(System.in);
+    // Method to display the login menu
+    public static void login() {
+        // Clear the console and print the menu title
+        ConsoleUtils.clearConsole();
+        ConsoleUtils.printTitle("Login Menu");
 
-        System.out.println("Welcome to the Login Menu!");
-        System.out.print("Enter Email or Phone Number: ");
-        String identifier = scanner.nextLine();
-
-        // Ask for password
-        System.out.print("Enter Password: ");
-        String password = scanner.nextLine(); // readpassword mamchatch
-
-        // Try to authenticate as client first
-        Client client = authenticateClient(identifier, password);
-
-        if (client != null) {
-            System.out.println("Login successful! Welcome, " + client.getFirstName());
-            clientMenu(client);
-        } else {
-            // If client login fails, try worker login
-            Client worker = authenticateWorker(identifier, password);
-            if (worker != null) {
-                System.out.println("Login successful! Welcome, Worker " + worker.getFirstName());
-                workerMenu(worker);
-            } else {
-                System.out.println("Login failed. Invalid email/phone number or password.");
-            }
-        }
-    }
-
-    // Method to authenticate client using email or phone number
-    private Client authenticateClient(String identifier, String password) {
-        List<Client> clients = loadClientsFromFile(CLIENT_FILE);
-        return clients.stream()
-                .filter(client -> (client.getEmail().equals(identifier) || client.getPhoneNumber().equals(identifier))
-                        && client.getPassword().equals(password))
-                .findFirst()
-                .orElse(null);
-    }
-
-    // Method to authenticate worker using email or phone number
-    private Client authenticateWorker(String identifier, String password) {
-        List<Client> workers = loadClientsFromFile(WORKER_FILE);
-        return workers.stream()
-                .filter(worker -> (worker.getEmail().equals(identifier) || worker.getPhoneNumber().equals(identifier))
-                        && worker.getPassword().equals(password))
-                .findFirst()
-                .orElse(null);
-    }
-
-    // Read password with masking as ***
-    private String readPassword() {
+        // Obtain a console instance for secure password input
         Console console = System.console();
         if (console == null) {
-            Scanner scanner = new Scanner(System.in);
-            return scanner.nextLine();  // Default way if console is not available
+            System.out.println("No console available. Password masking will not work.");
+            return;
         }
+
+        // Prompt the user for email and password
+        String email = console.readLine("Enter your email: ");
         char[] passwordArray = console.readPassword("Enter your password: ");
-        return new String(passwordArray);
+        String password = new String(passwordArray);
+
+        // Authenticate the user based on provided credentials
+        if (authenticateUser(email, password)) {
+            // Check if the user is a worker or a client and direct to the appropriate menu
+            if (isWorker(email)) {
+                // TODO: Implement WorkerMenu and call its display method
+                System.out.println("Redirecting to Worker Menu...");
+            } else {
+                // TODO: Implement ClientMenu and call its display method
+                System.out.println("Redirecting to Client Menu...");
+            }
+        } else {
+            // Display an error message for invalid credentials
+            System.out.println("Invalid email or password. Please try again or register if you don't have an account.");
+            ConsoleUtils.pause("Press Enter to continue...");
+        }
     }
 
-    // Method to load clients from a file
-    private List<Client> loadClientsFromFile(String fileName) {
-        List<Client> clients = new ArrayList<>();
-        File file = new File(fileName);
-        if (!file.exists()) {
-            return clients;
-        }
+    // Method to authenticate the user by checking credentials in the client file
+    private static boolean authenticateUser(String email, String password) {
+        return checkCredentials(email, password, CLIENT_FILE);
+    }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    // Method to check credentials against a specified file
+    private static boolean checkCredentials(String email, String password, String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
+            // Read each line from the file and split by comma
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
-                if (fields.length == 8) {
-                    Client client = new Client(
-                            fields[0],  // id
-                            fields[1],  // first name
-                            fields[2],  // last name
-                            fields[3],  // email
-                            fields[4],  // phone number
-                            fields[5],  // password
-                            UserType.valueOf(fields[6]),  // user type
-                            ClientType.valueOf(fields[7])  // client type
-                    );
-                    clients.add(client);
+                // Check if the email and password match
+                if (fields.length >= 2 && fields[0].equals(email) && fields[1].equals(password)) {
+                    return true;
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // Handle file reading errors
+            System.out.println("Error reading file: " + filePath);
         }
-        return clients;
+        return false;
     }
 
-    // Display the client menu after login
-    private void clientMenu(Client client) {
-        System.out.println("\nWelcome, " + client.getFirstName() + "!");
-        System.out.println("1. View Profile");
-        System.out.println("2. Update Profile");
-        System.out.println("3. Logout");
-
-        Scanner scanner = new Scanner(System.in);
-        int choice = scanner.nextInt();
-
-        switch (choice) {
-            case 1:
-                viewProfile(client);
-                break;
-            case 2:
-                updateProfile(client);
-                break;
-            case 3:
-                System.out.println("Logging out...");
-                break;
-            default:
-                System.out.println("Invalid choice.");
+    // Method to determine if a user is a worker by checking the worker file
+    private static boolean isWorker(String email) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(WORKER_FILE))) {
+            String line;
+            // Read each line from the worker file and check if the email exists
+            while ((line = reader.readLine()) != null) {
+                String[] fields = line.split(",");
+                if (fields.length >= 1 && fields[0].equals(email)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            // Handle case when the worker file is missing
+            System.out.println("Worker file not found. Please contact the administrator.");
         }
-    }
-
-    // Display the worker menu after login
-    private void workerMenu(Client worker) {
-        System.out.println("\nWelcome, Worker " + worker.getFirstName() + "!");
-        System.out.println("1. View Worker Dashboard");
-        System.out.println("2. View Profile");
-        System.out.println("3. Logout");
-
-        Scanner scanner = new Scanner(System.in);
-        int choice = scanner.nextInt();
-
-        switch (choice) {
-            case 1:
-                // Add worker dashboard features here
-                break;
-            case 2:
-                viewProfile(worker);
-                break;
-            case 3:
-                System.out.println("Logging out...");
-                break;
-            default:
-                System.out.println("Invalid choice.");
-        }
-    }
-
-    // Method to view profile
-    private void viewProfile(Client client) {
-        System.out.println("Profile Info:");
-        System.out.println("ID: " + client.getId());
-        System.out.println("Name: " + client.getFirstName() + " " + client.getLastName());
-        System.out.println("Email: " + client.getEmail());
-        System.out.println("Phone: " + client.getPhoneNumber());
-        System.out.println("Client Type: " + client.getType());
-    }
-
-    // Method to update profile
-    private void updateProfile(Client client) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("What would you like to update?");
-        System.out.println("1. Email");
-        System.out.println("2. Phone Number");
-        System.out.println("3. Password");
-
-        int choice = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
-
-        switch (choice) {
-            case 1:
-                System.out.print("Enter new email: ");
-                client.setEmail(scanner.nextLine());
-                break;
-            case 2:
-                System.out.print("Enter new phone number: ");
-                client.setPhoneNumber(scanner.nextLine());
-                break;
-            case 3:
-                System.out.print("Enter new password: ");
-                client.setPassword(scanner.nextLine());
-                break;
-            default:
-                System.out.println("Invalid choice.");
-        }
-
-        System.out.println("Profile updated successfully.");
+        return false;
     }
 }
