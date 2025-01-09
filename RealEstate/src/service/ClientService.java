@@ -1,14 +1,12 @@
 // Corrected ClientService
 package service;
 
+import java.io.*;
+import java.util.*;
 import model.Client;
 import model.ClientType;
 import model.UserType;
 import utils.IDGenerator;
-
-import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class ClientService {
 
@@ -140,7 +138,7 @@ public class ClientService {
     }
 
     // Helper method to load all clients from the CSV file
-    private List<Client> loadClientsFromFile() {
+    public List<Client> loadClientsFromFile() {
         List<Client> clients = new ArrayList<>();
         File file = new File(CLIENT_FILE);
 

@@ -9,18 +9,19 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import model.Appointment;
 import model.AppointmentState;
+import model.Client;
 import model.Worker;
 
 
 
-public class AppointmentService implements IAppointmentService {
+public class AppointmentService {
     private  ArrayList<Appointment> AppList = new ArrayList<>();
-    private final String APPOINTMENT_FILE = "recources/appointment.dat";  // File name to store appointments
+    private final String APPOINTMENT_FILE = "appointment.csv";  // File name to store appointments
     public AppointmentService() {
         // Initialize anything if needed
     }
-    @Override
-    public void createAppointment(Scanner scanner, Worker createdBy) {
+    
+    public void createAppointment(Scanner scanner, ClientService clientService, Worker createdBy) {
         System.out.println("\n--- Create Appointment ---");
     
         // Read and parse date and time
@@ -38,11 +39,20 @@ public class AppointmentService implements IAppointmentService {
             return;
         }
     
-        // Collect other details
+        
         System.out.print("Enter client ID: ");
         String clientID = scanner.nextLine();
+
+        // Validate if the client ID exists using ClientService
+        List<Client> clients = clientService.loadClientsFromFile();
+        boolean clientExists = clients.stream().anyMatch(client -> client.getId().equals(clientID));
+
+        if (!clientExists) {
+        System.out.println("Error: Client ID does not exist.");
+        return;
+         }
     
-        // Ensure unique ID is assigned
+    
         Appointment newAppointment = new Appointment(dateTime, AppointmentState.SCHEDULED, createdBy, clientID);
     
         if (AppList.stream().anyMatch(app -> app.getIdAppointment().equals(newAppointment.getIdAppointment()))) {
@@ -67,32 +77,29 @@ public class AppointmentService implements IAppointmentService {
         for (Appointment appointment : AppList) {
             System.out.println(appointment);
         }
-        //Approve or reject an appointment??
+        
     }
     // Save appointments to a file
     public void saveAppointmentsToFile() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(APPOINTMENT_FILE))) {
-            oos.writeObject(AppList);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(APPOINTMENT_FILE))) {
+            for (Appointment appointment : AppList) {
+                String line = String.join(",",
+                    appointment.getIdAppointment(),
+                    appointment.getDateTime().toString(),
+                    appointment.getState().name(),
+                    appointment.getCreatedAt().toString(),
+                    appointment.getCreatedBy().getId(),
+                    appointment.getClientId()
+                );
+                writer.write(line);
+                writer.newLine();
+            }
             System.out.println("Appointments saved to file.");
         } catch (IOException e) {
             System.out.println("Error saving appointments to file: " + e.getMessage());
         }
     }
-    public void loadAppointmentsFromFile() {
-        File file = new File(APPOINTMENT_FILE);
-        if (!file.exists()) {
-            System.out.println("Appointment file not found. Creating a new one.");
-            saveAppointmentsToFile(); // Create an empty file
-            return;
-        }
     
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            AppList = (ArrayList<Appointment>) ois.readObject();
-            System.out.println("Appointments loaded from file.");
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error loading appointments: " + e.getMessage());
-        }
-    }
     
     // Remove an appointment by ID
     public void removeAppointment(Scanner scanner) {
@@ -161,6 +168,7 @@ public class AppointmentService implements IAppointmentService {
         }
     }
     // Method to view appointments for a specific client
+
     public void viewAppointmentsForClient(String clientId) {
         // Filter appointments for the given clientId
         List<Appointment> clientAppointments = AppList.stream()
@@ -175,5 +183,8 @@ public class AppointmentService implements IAppointmentService {
                 System.out.println(appointment);  // Print appointment details
             }
         }
-    }
-}
+        }
+
+
+
+ }
