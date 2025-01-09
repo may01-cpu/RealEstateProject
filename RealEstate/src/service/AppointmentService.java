@@ -99,6 +99,39 @@ public class AppointmentService {
             System.out.println("Error saving appointments to file: " + e.getMessage());
         }
     }
+    public void loadAppointmentsFromFile() {
+        File file = new File(APPOINTMENT_FILE);
+        if (!file.exists()) {
+            System.out.println("Appointment file not found. Creating a new one.");
+            saveAppointmentsToFile(); // Create an empty file
+            return;
+        }
+    
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 6) {
+                    System.out.println("Skipping invalid line: " + line);
+                    continue;
+                }
+    
+                String idAppointment = parts[0];
+                LocalDateTime dateTime = LocalDateTime.parse(parts[1]);
+                AppointmentState state = AppointmentState.valueOf(parts[2]);
+                LocalDateTime createdAt = LocalDateTime.parse(parts[3]);
+                String workerId = parts[4]; // Read worker ID directly
+                String clientId = parts[5];
+    
+                Appointment appointment = new Appointment(dateTime, state, createdAt, workerId, clientId);
+                AppList.add(appointment);
+            }
+    
+            System.out.println("Appointments loaded successfully. Total: " + AppList.size());
+        } catch (Exception e) {
+            System.out.println("Error loading appointments: " + e.getMessage());
+        }
+    }
     
     
     // Remove an appointment by ID

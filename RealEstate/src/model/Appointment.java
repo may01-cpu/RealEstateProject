@@ -9,23 +9,28 @@ public class Appointment {
     private LocalDateTime dateTime; 
     private AppointmentState state; 
     private LocalDateTime createdAt; // When the appointment was created
-    private Worker createdBy; // Worker who created the appointment
+    private String workerId; // Worker who created the appointment
     private String clientId;  
     // Constructeur principal
-    public Appointment( LocalDateTime dateTime, AppointmentState state, Worker createdBy ,String clientId) {
+    public Appointment( LocalDateTime dateTime, AppointmentState state, String workerId ,String clientId) {
                         if (dateTime == null) throw new IllegalArgumentException("DateTime cannot be null.");
                         if (dateTime.isBefore(LocalDateTime.now())) {
                             throw new IllegalArgumentException("Appointment dateTime cannot be in the past.");
                         }
                         if (state == null) throw new IllegalArgumentException("State cannot be null.");
-                        if (createdBy == null) throw new IllegalArgumentException("CreatedBy (Worker) cannot be null.");
+                        
 
         this.idAppointment = IDGenerator.generateID("A");
         this.dateTime = dateTime;
         this.state = state;
         this.createdAt = LocalDateTime.now();
-        this.createdBy = createdBy;
+        this.workerId = workerId;
         this.clientId = clientId;
+    }
+     // Overloaded constructor to include createdAt
+     public Appointment(LocalDateTime dateTime, AppointmentState state, LocalDateTime createdAt, String workerId, String clientId) {
+        this(dateTime, state, workerId, clientId); // Call the main constructor
+        this.createdAt = createdAt; // Override createdAt with the value from the file
     }
 
     //get & set
@@ -62,8 +67,8 @@ public class Appointment {
         return createdAt;
     }  //il n'y a pas de setter pour createdAt 
 
-    public Worker getCreatedBy() {
-        return createdBy;
+    public String getworkerId() {
+        return workerId;
     }
 
     @Override
@@ -73,7 +78,6 @@ public class Appointment {
                 ", dateTime=" + dateTime +
                 ", state=" + state +
                 ", createdAt=" + createdAt +
-                ", createdBy=" + createdBy.getFirstName() +" " +createdBy.getLastName() +
                 ", Client ID: " + clientId +
                 '}';
     }
