@@ -2,8 +2,8 @@ package menuconsole;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.Console;
 import java.io.IOException;
+import java.util.Scanner;
 import utils.ConsoleUtils;
 
 public class LoginMenu {
@@ -18,17 +18,14 @@ public class LoginMenu {
         ConsoleUtils.clearConsole();
         ConsoleUtils.printTitle("Login Menu");
 
-        // Obtain a console instance for secure password input
-        Console console = System.console();
-        if (console == null) {
-            System.out.println("No console available. Password masking will not work.");
-            return;
-        }
+        // Use Scanner for user input
+        Scanner scanner = new Scanner(System.in);
 
         // Prompt the user for email and password
-        String email = console.readLine("Enter your email: ");
-        char[] passwordArray = console.readPassword("Enter your password: ");
-        String password = new String(passwordArray);
+        System.out.print("Enter your email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter your password: ");
+        String password = scanner.nextLine();
 
         // Authenticate the user based on provided credentials
         if (authenticateUser(email, password)) {
@@ -45,6 +42,9 @@ public class LoginMenu {
             System.out.println("Invalid email or password. Please try again or register if you don't have an account.");
             ConsoleUtils.pause("Press Enter to continue...");
         }
+
+        // Close the scanner (optional, but good practice)
+        scanner.close();
     }
 
     // Method to authenticate the user by checking credentials in the client file
