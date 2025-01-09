@@ -1,9 +1,7 @@
 package menuconsole;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-
 import model.*;
 import service.AppointmentService;
 import service.ClientService;
@@ -231,7 +229,7 @@ public class WorkerMenu {
     
     switch (choice) {
         case 1:
-            appointmentService.createAppointment(scanner, worker); // Use the worker as the creator
+            appointmentService.createAppointment(scanner); // Use the worker as the creator
             break;
         case 2:
             appointmentService.updateAppointmentState(scanner); // Update an appointment

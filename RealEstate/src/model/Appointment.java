@@ -28,9 +28,10 @@ public class Appointment {
         this.clientId = clientId;
     }
      // Overloaded constructor to include createdAt
-     public Appointment(LocalDateTime dateTime, AppointmentState state, LocalDateTime createdAt, String workerId, String clientId) {
+     public Appointment(LocalDateTime dateTime, AppointmentState state, LocalDateTime createdAt, String workerId, String clientId,String idAppointment) {
         this(dateTime, state, workerId, clientId); // Call the main constructor
         this.createdAt = createdAt; // Override createdAt with the value from the file
+        this.idAppointment=idAppointment;
     }
 
     //get & set
