@@ -1,6 +1,7 @@
 package menuconsole;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import model.*;
 import service.AppointmentService;
@@ -160,7 +161,8 @@ public class WorkerMenu {
         System.out.println("1. Create Transaction");
         System.out.println("2. View Transaction by ID");
         System.out.println("3. List All Transactions");
-        System.out.println("4. Exit");
+        System.out.println("4. Search Transactions by Type");
+        System.out.println("5. Exit");
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -204,6 +206,28 @@ public class WorkerMenu {
                 break;
 
             case 4:
+                System.out.print("Enter Transaction Type : ");
+                String typeString = scanner.nextLine();
+                try{
+                    TransactionType transactionType = TransactionType.valueOf(typeString.toUpperCase());
+                    List<Transaction> transactions= transactionService.rechercherTransactionsParType(transactionType);
+                    if (transactions.isEmpty()) {
+                        System.out.println("No transactions found for type " + typeString);
+                    } else{
+                        System.out.println("Transactions found for type ");
+                        for (Transaction transaction : transactions) {
+                            System.out.println(transaction);
+                        }
+                    }
+
+                } catch (IllegalArgumentException e){
+                    System.out.println("type de transaction invalide.");
+                }
+                break;
+
+
+
+            case 5:
                 System.out.println("Returning to worker menu...");
                 return;
 
