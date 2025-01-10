@@ -9,8 +9,8 @@ import utils.ConsoleUtils;
 public class LoginMenu {
 
     // File paths for storing client and worker data
-    private static final String CLIENT_FILE = "client.csv"; // Assuming this is in the root of the project
-    private static final String WORKER_FILE = "real_estate/resources/worker.csv"; // Assuming this is in resources inside real_estate
+    private static final String CLIENT_FILE = "recources/clients.csv"; // Assuming this is in the root of the project
+    private static final String WORKER_FILE = "recources/worker.csv"; // Assuming this is in resources inside real_estate
 
     // Method to display the login menu
     public static void login() {
@@ -43,8 +43,6 @@ public class LoginMenu {
             ConsoleUtils.pause("Press Enter to continue...");
         }
 
-        // Close the scanner (optional, but good practice)
-        scanner.close();
     }
 
     // Method to authenticate the user by checking credentials in the client file
