@@ -138,11 +138,12 @@ public class ClientMenu {
         switch (choice) {
             case 1:
 
-                System.out.println("Adding a property listing...");
+                ConsoleUtils.showLoading("Adding a property listing",3);
                 break;
             case 2:
 
-                System.out.println("Displaying listed properties...");
+                ConsoleUtils.showLoading("Displaying listed properties",3);
+
                 break;
             case 3:
 

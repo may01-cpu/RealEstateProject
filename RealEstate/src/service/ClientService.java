@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.*;
 import model.Client;
 import model.ClientType;
-import model.UserType;
 import utils.IDGenerator;
 
 public class ClientService {
@@ -37,7 +36,7 @@ public class ClientService {
         if (isEmailUnique(email)) {
 
             String id = IDGenerator.generateID("CLIENT"); // Pass "CLIENT" as the entity type
-            Client client = new Client(id, firstName, lastName, email, phoneNumber, password, UserType.CLIENT, clientType);
+            Client client = new Client(id, firstName, lastName, email, phoneNumber, password, clientType);
 
             // Save client to CSV
             saveClientToFile(client);
@@ -150,7 +149,7 @@ public class ClientService {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
-                if (fields.length == 8) {
+                if (fields.length == 7) {
                     Client client = new Client(
                             fields[0],  // id
                             fields[1],  // first name
@@ -158,8 +157,7 @@ public class ClientService {
                             fields[3],  // email
                             fields[4],  // phone number
                             fields[5],  // password
-                            UserType.valueOf(fields[6]),  // user type
-                            ClientType.valueOf(fields[7])  // client type
+                            ClientType.valueOf(fields[6])  // client type
                     );
                     clients.add(client);
                 }
