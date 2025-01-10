@@ -56,6 +56,7 @@ public class AppointmentService {
 
     // Méthode pour lister tous les rendez-vous
     public void listAppointments() {
+        loadAppointmentsFromFile();
         System.out.println("\n--- Appointment List ---");
         if (AppList.isEmpty()) {
             System.out.println("No appointments to display.");
@@ -75,21 +76,36 @@ public class AppointmentService {
                 appointment.getDateTime() + "," +
                 appointment.getState() + "," +
                 appointment.getCreatedAt() + "," +
-                appointment.getworkerId() + "," +
+                appointment.getworker() + "," +
                 appointment.getClientId());
         writer.newLine();
     } catch (IOException e) {
         e.printStackTrace();
     }
 }
-
+// Helper method to save all appointments from AppList to the CSV file
+private void saveAllAppointmentsToFile() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(APPOINTMENT_FILE))) {
+        for (Appointment appointment : AppList) {
+            writer.write(appointment.getIdAppointment() + "," +
+                         appointment.getDateTime() + "," +
+                         appointment.getState() + "," +
+                         appointment.getCreatedAt() + "," +
+                         appointment.getworker() + "," +
+                         appointment.getClientId());
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
     // Helper method to load all appointments from the CSV file
-        public List<Appointment> loadAppointmentsFromFile() {
-        List<Appointment> appointments = new ArrayList<>();
+        public void loadAppointmentsFromFile() {
+        AppList.clear(); // Clear the current list before loading
         File file = new File(APPOINTMENT_FILE);
         if (!file.exists()) {
-        return appointments;  // If file doesn't exist, return an empty list
+        return ;  // If file doesn't exist, nothing to load
         }
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
@@ -105,52 +121,43 @@ public class AppointmentService {
                     fields[5],  // clientId
                     fields[0]   // idAppointment
                 );
-                appointments.add(appointment);
+                AppList.add(appointment);
             }
         }
     } catch (IOException e) {
         e.printStackTrace();
     }
-    return appointments;
 }
 
 
 
-    // Remove an appointment by ID
+    // Updated removeAppointment method
     public void removeAppointment(Scanner scanner) {
-        System.out.println("\n--- Remove Appointment ---");
-        System.out.print("Enter appointment ID to remove: ");
-        String appointmentId = scanner.nextLine();
-        Appointment appointmentToRemove = null;
-        for (Appointment appointment : AppList) {
-            if (appointment.getIdAppointment().equals(appointmentId)) {
-                appointmentToRemove = appointment;
-                break;
-            }
-        }
-        if (appointmentToRemove != null) {
-            AppList.remove(appointmentToRemove);
-            saveAppointmentToFile(appointmentToRemove);
-            System.out.println("Appointment removed successfully.");
-        } else {
-            System.out.println("Error: Appointment with this ID not found.");
-        }
+    loadAppointmentsFromFile(); // Ensure AppList is up-to-date
+    System.out.println("\n--- Remove Appointment ---");
+    System.out.print("Enter appointment ID to remove: ");
+    String appointmentId = scanner.nextLine();
+    boolean removed = AppList.removeIf(appointment -> appointment.getIdAppointment().equals(appointmentId));
+    if (removed) {
+        saveAllAppointmentsToFile(); // Save updated list back to file
+        System.out.println("Appointment removed successfully.");
+    } else {
+        System.out.println("Error: Appointment with this ID not found.");
     }
+}
 
 
     // Update the state of an appointment by ID
     public void updateAppointmentState(Scanner scanner) {
+        loadAppointmentsFromFile();
         System.out.println("\n--- Update Appointment State ---");
         System.out.print("Enter appointment ID to update: ");
         String appointmentId = scanner.nextLine();
-        Appointment appointmentToUpdate = null;
-        // Find the appointment with the given ID
-        for (Appointment appointment : AppList) {
-            if (appointment.getIdAppointment().equals(appointmentId)) {
-                appointmentToUpdate = appointment;
-                break;
-            }
-        }
+        Appointment appointmentToUpdate = AppList.stream()
+        .filter(appointment -> appointment.getIdAppointment().equals(appointmentId))
+        .findFirst()
+        .orElse(null);
+
         if (appointmentToUpdate != null) {
             System.out.println("Current state: " + appointmentToUpdate.getState());
             System.out.println("Select new state from the following options:");
@@ -163,11 +170,12 @@ public class AppointmentService {
             try {
                 AppointmentState newState = AppointmentState.valueOf(newStateInput);
                 if (appointmentToUpdate.getState() == newState) {
+
                     System.out.println("The appointment is already in this state.");
                     return;
                 }
                 appointmentToUpdate.setState(newState);
-                saveAppointmentToFile(appointmentToUpdate);
+                saveAllAppointmentsToFile(); // Save updated list back to file
                 System.out.println("Appointment state updated successfully to: " + newState);
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: Invalid state entered.");
@@ -181,6 +189,7 @@ public class AppointmentService {
     // Method to view appointments for a specific client
     public void viewAppointmentsForClient(String clientId) {
         // Filter appointments for the given clientId
+        loadAppointmentsFromFile();
         List<Appointment> clientAppointments = AppList.stream()
                 .filter(appointment -> appointment.getClientId().equals(clientId))
                 .collect(Collectors.toList());

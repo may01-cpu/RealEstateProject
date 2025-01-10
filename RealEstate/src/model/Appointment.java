@@ -9,10 +9,10 @@ public class Appointment {
     private LocalDateTime dateTime; 
     private AppointmentState state; 
     private LocalDateTime createdAt; // When the appointment was created
-    private String workerId; // Worker who created the appointment
+    private String worker; // Worker who created the appointment
     private String clientId;  
     // Constructeur principal
-    public Appointment( LocalDateTime dateTime, AppointmentState state, String workerId ,String clientId) {
+    public Appointment( LocalDateTime dateTime, AppointmentState state, String worker ,String clientId) {
                         if (dateTime == null) throw new IllegalArgumentException("DateTime cannot be null.");
                         if (dateTime.isBefore(LocalDateTime.now())) {
                             throw new IllegalArgumentException("Appointment dateTime cannot be in the past.");
@@ -24,12 +24,12 @@ public class Appointment {
         this.dateTime = dateTime;
         this.state = state;
         this.createdAt = LocalDateTime.now();
-        this.workerId = workerId;
+        this.worker = worker;
         this.clientId = clientId;
     }
      // Overloaded constructor to include createdAt
-     public Appointment(LocalDateTime dateTime, AppointmentState state, LocalDateTime createdAt, String workerId, String clientId,String idAppointment) {
-        this(dateTime, state, workerId, clientId); // Call the main constructor
+     public Appointment(LocalDateTime dateTime, AppointmentState state, LocalDateTime createdAt, String worker, String clientId,String idAppointment) {
+        this(dateTime, state, worker, clientId); // Call the main constructor
         this.createdAt = createdAt; // Override createdAt with the value from the file
         this.idAppointment=idAppointment;
     }
@@ -68,8 +68,8 @@ public class Appointment {
         return createdAt;
     }  //il n'y a pas de setter pour createdAt 
 
-    public String getworkerId() {
-        return workerId;
+    public String getworker() {
+        return worker;
     }
 
     @Override
@@ -79,6 +79,7 @@ public class Appointment {
                 ", dateTime=" + dateTime +
                 ", state=" + state +
                 ", createdAt=" + createdAt +
+                ",createdBy= "  + worker +
                 ", Client ID: " + clientId +
                 '}';
     }
