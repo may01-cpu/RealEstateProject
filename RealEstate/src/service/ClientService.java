@@ -180,7 +180,6 @@ public class ClientService {
                     client.getEmail() + "," +
                     client.getPhoneNumber() + "," +
                     client.getPassword() + "," +
-                    client.getUserType() + "," +
                     client.getType());
             writer.newLine();
         } catch (IOException e) {
@@ -198,7 +197,7 @@ public class ClientService {
                         client.getEmail() + "," +
                         client.getPhoneNumber() + "," +
                         client.getPassword() + "," +
-                        client.getUserType() + "," +
+
                         client.getType());
                 writer.newLine();
             }
