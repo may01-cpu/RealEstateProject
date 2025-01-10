@@ -46,7 +46,6 @@ public class LoginMenu {
                         System.out.println("Login successful! Welcome, " + client.getFirstName());
                         clientMenu(client);
                     } else {
-                        System.out.println("Invalid credentials. Please try again.");
                         // If client login fails, try worker login
                         Worker worker = authenticateWorker(email, password);
                         if (worker != null) {

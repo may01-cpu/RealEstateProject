@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyFiltration {
-    private PropertyType type;
-    private double minSize;
-    private double minPrice;
-    private double maxPrice;
+    private final PropertyType type;
+    private final double minSize;
+    private final double minPrice;
+    private final double maxPrice;
 
     public PropertyFiltration(double minPrice, double maxPrice, double minSize,PropertyType type) {
 
@@ -21,11 +21,8 @@ public class PropertyFiltration {
         List<Property> filteredProperties = new ArrayList<>();
 
         for (Property property : properties) {
-            boolean matches = true;
 
-            if (minPrice !=0 && property.getPrice() < minPrice) {
-                matches = false;
-            }
+            boolean matches = minPrice == 0 || !(property.getPrice() < minPrice);
 
             if (maxPrice !=0 && property.getPrice() > maxPrice) {
                 matches = false;
@@ -51,7 +48,9 @@ public class PropertyFiltration {
         if (properties.isEmpty()) {
             System.out.println("No properties fit this criteria");
         } else {
-            properties.forEach(System.out::println);
+            for (Property property : properties) {
+                System.out.println(property);
+            }
         }
     }
 

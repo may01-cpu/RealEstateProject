@@ -11,7 +11,6 @@ public class ConsoleUtils {
 
     // Print a title with borders
     public static void printTitle(String title) {
-        clearConsole();
         String border = "=".repeat(title.length() + 4);
         System.out.println(border);
         System.out.println(" " + title);

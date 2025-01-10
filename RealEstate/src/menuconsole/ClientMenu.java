@@ -8,6 +8,7 @@ import service.AppointmentService;
 import service.ClientService;
 import service.PropertyService;
 import service.TransactionService;
+import utils.ConsoleUtils;
 
 public class ClientMenu {
     private PropertyService propertyService;
@@ -28,10 +29,12 @@ public class ClientMenu {
         Scanner scanner = new Scanner(System.in);
 
         switch (client.getType()) {
-            case BUYER: // locataire et acheteur
+            case BUYER:
+                ConsoleUtils.clearConsole();// locataire et acheteur
                 afficherMenuAcheteur(scanner);
                 break;
-            case SELLER: // vendeur et bayeur
+            case SELLER:
+                ConsoleUtils.clearConsole();// vendeur et bayeur
                 afficherMenuVendeur(scanner);
                 break;
             default:
@@ -59,7 +62,8 @@ public class ClientMenu {
                 propertyService.printProperties();
                 break;
             case 2:
-                System.out.println("Scheduling a property visit...");
+                ConsoleUtils.showLoading("Scheduling a property visit",3);
+                appointmentService.createAppointment(scanner);
                 break;
             case 3:
                 appointmentService.listAppointments();

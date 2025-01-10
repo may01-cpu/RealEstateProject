@@ -71,8 +71,8 @@ public class Property {
 
     @Override
     public String toString() {
-        return "\t-IdProperty :" + IdProperty + "\n\t-Type :" + Type + "\n\t-Size :" + Size + "\n\t-Price :" + Price + ",\n\t-location :" + location.toString()
-                + "\n\t-Stat:" + Stat + "\n\tLegalStat=" + LegalStat;
+        return "\t[IdProperty:" + IdProperty + ",Type:" + Type + ",Size:" + Size + ",Price:" + Price + ",location:" + location.toString()
+                + ",Stat:" + Stat + ",LegalStat:" + LegalStat+"]";
     }
 
     // Serialize to file format
@@ -83,7 +83,7 @@ public class Property {
 
     // Deserialize from file format
     public static Property fromFileFormat(String line) {
-        String[] parts = line.split("|", 7); // Split into 7 parts
+        String[] parts = line.split("\\|", 7); // Split into 7 parts
         if (parts.length == 7) {
             return new Property(parts[0].trim(),
                     PropertyType.valueOf(parts[1].trim()), // Parse to double
@@ -95,6 +95,7 @@ public class Property {
             );
         }
         throw new IllegalArgumentException("Invalid property line: " + line);
+
     }
 }
 

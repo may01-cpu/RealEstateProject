@@ -207,6 +207,7 @@ public class ClientService {
     }
 
     public Client getClientById(String clientId) {
-        return null;
+        List<Client> clients = loadClientsFromFile();
+        return clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
     }
 }

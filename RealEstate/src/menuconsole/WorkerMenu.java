@@ -110,6 +110,7 @@ public class WorkerMenu {
                 System.out.println("Invalid choice.");
                 break;
         }
+
     }
 
     private void manageClients(Scanner scanner){
@@ -135,6 +136,7 @@ public class WorkerMenu {
                 clientService.addClient();
                 break;
             case 3:
+                ConsoleUtils.clearConsole();
                 System.out.print("Enter Property ID: ");
                 String cId = scanner.nextLine();
                 clientService.updateClient(cId);
@@ -171,7 +173,7 @@ public class WorkerMenu {
 
         switch (choice) {
             case 1:
-                System.out.println("Enter transaction type ");
+                System.out.println("Enter transaction type ");//preciser le type
                 String type = scanner.nextLine();
 
                 System.out.println("Enter Property ID: ");
