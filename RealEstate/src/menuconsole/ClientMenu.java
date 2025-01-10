@@ -122,51 +122,53 @@ public class ClientMenu {
 
     // Menu pour le vendeur / bayeur
     private void afficherMenuVendeur(Scanner scanner) {
-        System.out.println("\n--- Seller/Buyer Menu ---");
-        System.out.println("1. Add a property listing");
-        System.out.println("2. View my listed properties");
-        System.out.println("3. View My Appointments");
-        System.out.println("4. View My Transactions");
-        System.out.println("5. Generate a Contract");
-        System.out.println("6. Register a Payment");
-        System.out.println("7. Modify My Information");
-        System.out.println("8. Exit");
+        while (true) {
+            System.out.println("\n--- Seller/Buyer Menu ---");
+            System.out.println("1. Add a property listing");
+            System.out.println("2. View my listed properties");
+            System.out.println("3. View My Appointments");
+            System.out.println("4. View My Transactions");
+            System.out.println("5. Generate a Contract");
+            System.out.println("6. Register a Payment");
+            System.out.println("7. Modify My Information");
+            System.out.println("8. Exit");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        switch (choice) {
-            case 1:
+            switch (choice) {
+                case 1:
 
-                ConsoleUtils.showLoading("Adding a property listing",3);
-                break;
-            case 2:
+                    ConsoleUtils.showLoading("Adding a property listing", 3);
+                    break;
+                case 2:
 
-                ConsoleUtils.showLoading("Displaying listed properties",3);
+                    ConsoleUtils.showLoading("Displaying listed properties", 3);
 
-                break;
-            case 3:
+                    break;
+                case 3:
 
-                manageAppointments(scanner);
-                break;
-            case 4:
+                    manageAppointments(scanner);
+                    break;
+                case 4:
 
-                transactionService.viewTransaction(client.getId());
-                break;
-            case 5:
-                generateContract(scanner);
-                break;
-            case 6:
-                registerPayment(scanner);
-                break;
-            case 7:
-                clientService.updateClient(client.getId());
-                break;
-            case 8:
-                System.out.println("Goodbye!");
-                return;
-            default:
-                System.out.println("Invalid choice.");
+                    transactionService.viewTransaction(client.getId());
+                    break;
+                case 5:
+                    generateContract(scanner);
+                    break;
+                case 6:
+                    registerPayment(scanner);
+                    break;
+                case 7:
+                    clientService.updateClient(client.getId());
+                    break;
+                case 8:
+                    System.out.println("Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid choice.");
+            }
         }
     }
     private void manageAppointments(Scanner scanner) {

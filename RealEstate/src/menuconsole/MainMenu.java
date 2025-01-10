@@ -7,6 +7,7 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            System.out.println("\n\n\n");
             ConsoleUtils.printTitle("  MainMenu ! "); 
             System.out.println("1. Login ");
             System.out.println("2. Register as client");
