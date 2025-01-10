@@ -17,7 +17,7 @@ public class WorkerMenu {
 
 
     public WorkerMenu() {
-         displayMenu();
+        displayMenu();
     }
 
     // Method to display the worker menu and handle operations
@@ -46,7 +46,7 @@ public class WorkerMenu {
                     manageTransactions(scanner);
                     break;
                 case 4:
-                      manageAppointments(scanner);
+                    manageAppointments(scanner);
                     break;
                 case 5:
                     ConsoleUtils.showLoading("Exiting",3);
@@ -76,7 +76,7 @@ public class WorkerMenu {
         switch (choice) {
             case 1:
                 ConsoleUtils.clearConsole();
-               propertyService.printProperties();
+                propertyService.printProperties();
                 break;
             case 2:
                 ConsoleUtils.clearConsole();
@@ -156,6 +156,8 @@ public class WorkerMenu {
 
     private void manageTransactions(Scanner scanner) {
         TransactionService transactionService = new TransactionService();
+        PropertyService propertyService = new PropertyService();
+        ClientService clientService = new ClientService();
 
         System.out.println("\n--- Manage Transactions ---");
         System.out.println("1. Create Transaction");
@@ -174,9 +176,19 @@ public class WorkerMenu {
 
                 System.out.println("Enter Property ID: ");
                 String propertyId = scanner.nextLine();
+                Property property = propertyService.getPropertyById(propertyId);
+                if (property == null) {
+                    System.out.println("Property does not exist");
+                    break;
+                }
 
                 System.out.println("Enter Client ID: ");
                 String clientId = scanner.nextLine();
+                Client client = clientService.getClientById(clientId);
+                if (client == null) {
+                    System.out.println("Client does not exist");
+                    break;
+                }
 
                 System.out.println("Enter Amount: ");
                 double amount = scanner.nextDouble();
@@ -191,7 +203,7 @@ public class WorkerMenu {
                 System.out.println("Enter Recipient ID: ");
                 String recipientId = scanner.nextLine();
 
-                transactionService.creerTransaction(TransactionType.valueOf(type), null, null, amount, transactionId, initiatorId, recipientId, new Date(), new Date());
+                transactionService.creerTransaction(TransactionType.valueOf(type), property, client, amount, transactionId, initiatorId, recipientId, new Date(), new Date());
                 break;
 
             case 2:
@@ -238,44 +250,44 @@ public class WorkerMenu {
     }
 
     private void manageAppointments(Scanner scanner) {
-    AppointmentService appointmentService = new AppointmentService();
+        AppointmentService appointmentService = new AppointmentService();
 
-    System.out.println("\n--- Manage Appointments ---");
-    System.out.println("1. Create Appointment");
-    System.out.println("2. Update Appointment State");
-    System.out.println("3. Cancel Appointment");
-    System.out.println("4. View Appointments for a Client");
-    System.out.println("5. view all Appointments");
-    System.out.println("6. Exit");
+        System.out.println("\n--- Manage Appointments ---");
+        System.out.println("1. Create Appointment");
+        System.out.println("2. Update Appointment State");
+        System.out.println("3. Cancel Appointment");
+        System.out.println("4. View Appointments for a Client");
+        System.out.println("5. view all Appointments");
+        System.out.println("6. Exit");
 
-    int choice = scanner.nextInt();
-    scanner.nextLine(); // Consume newline
-    
-    switch (choice) {
-        case 1:
-            appointmentService.createAppointment(scanner); // Use the worker as the creator
-            break;
-        case 2:
-            appointmentService.updateAppointmentState(scanner); // Update an appointment
-            break;
-        case 3:
-            appointmentService.removeAppointment(scanner); // Cancel an appointment
-            break;
-        case 4:
-            System.out.print("Enter Client ID: ");
-            String clientId = scanner.nextLine();
-            appointmentService.viewAppointmentsForClient(clientId); // Display appointments for a client (implement this method if needed)
-            break;
-        case 5:
-            appointmentService.listAppointments();
-            break;
-        case 6:
-            ConsoleUtils.showLoading("Returning to worker menu",2);
-            return;
-        default:
-            System.out.println("Invalid choice.");
-            break;
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        switch (choice) {
+            case 1:
+                appointmentService.createAppointment(scanner); // Use the worker as the creator
+                break;
+            case 2:
+                appointmentService.updateAppointmentState(scanner); // Update an appointment
+                break;
+            case 3:
+                appointmentService.removeAppointment(scanner); // Cancel an appointment
+                break;
+            case 4:
+                System.out.print("Enter Client ID: ");
+                String clientId = scanner.nextLine();
+                appointmentService.viewAppointmentsForClient(clientId); // Display appointments for a client (implement this method if needed)
+                break;
+            case 5:
+                appointmentService.listAppointments();
+                break;
+            case 6:
+                ConsoleUtils.showLoading("Returning to worker menu",2);
+                return;
+            default:
+                System.out.println("Invalid choice.");
+                break;
+        }
     }
-}
 
 }

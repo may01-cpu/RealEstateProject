@@ -10,7 +10,7 @@ import model.Property;
 import model.Client;
 
 public class TransactionService {
-    private static final String FILE_NAME = "recources/transactions.txt";
+    private static final String FILE_NAME = "recources/transactions.CVS";
 
     public TransactionService() {
         try {

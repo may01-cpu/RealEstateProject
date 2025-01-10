@@ -10,7 +10,7 @@ import utils.IDGenerator;
 
 public class ClientService {
 
-    private static final String CLIENT_FILE = "clients.csv";  // CSV file to store clients
+    private static final String CLIENT_FILE = "recources/clients.csv";  // CSV file to store clients
 
     public ClientService() {
     }
@@ -205,5 +205,9 @@ public class ClientService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Client getClientById(String clientId) {
+        return null;
     }
 }
