@@ -206,4 +206,8 @@ public class ClientService {
             e.printStackTrace();
         }
     }
+
+    public Client getClientById(String clientId) {
+        return null;
+    }
 }

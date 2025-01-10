@@ -17,7 +17,7 @@ public class PropertyService implements propertyinter {
         loadProperties();
     }
 
-   
+
     private void loadProperties()  {
         File file = new File(FILE_PATH);
         if (file.exists()) {
@@ -52,16 +52,16 @@ public class PropertyService implements propertyinter {
     }
 
     private void  saveProperty(Property property) {
-            try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH))) {
-                    pw.println(property.toFileFormat());
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH))) {
+            pw.println(property.toFileFormat());
 
-             }
-            catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
-            }
+        }
     }
 
-    
+
     public void printProperties() {
         if (properties.isEmpty()) {
             System.out.println("No properties to display.");
@@ -135,8 +135,8 @@ public class PropertyService implements propertyinter {
             case 1:
                 System.out.print("Enter the new price : ");
                 double newPrice = scan.nextDouble();
-                    property.setPrice(newPrice);
-                    System.out.println("Price updated successfully!");
+                property.setPrice(newPrice);
+                System.out.println("Price updated successfully!");
                 break;
             case 2:
                 System.out.print("Enter the new state (RENTED,FOR_SALE,SOLD,FOR_RENT) : ");
@@ -144,7 +144,7 @@ public class PropertyService implements propertyinter {
                 property.setStat(stat);
                 System.out.println("Property state updated successfully!");
                 break;
-            case 3:  
+            case 3:
                 System.out.println("Enter the new Property Legal State:\n-NEW\n-UNDER_CONSTRUCTION\n-RENOVATED\n-GOOD_CONDITION\n-DILAPIDATED\n-NEEDS_REPAIRS");
                 PropertyLegalStat legalstat=PropertyLegalStat.valueOf(scan.nextLine().toUpperCase());
                 System.out.println("Property legal state updated successfully!");
@@ -182,10 +182,10 @@ public class PropertyService implements propertyinter {
     @Override
     public void getPropertyDetails(String propertyId) {
         Property property = properties.stream().filter(p -> p.getIdProperty().equals(propertyId)).findFirst().orElse(null);
-       if(property==null){
-         System.out.println("Property not found");
-         return;
-       }
+        if(property==null){
+            System.out.println("Property not found");
+            return;
+        }
         System.out.println("Property details :");
         property.toString();
     }
@@ -208,8 +208,7 @@ public class PropertyService implements propertyinter {
     }
 
 
-
-
+    public Property getPropertyById(String propertyId) {
+        return null;
+    }
 }
-
-
