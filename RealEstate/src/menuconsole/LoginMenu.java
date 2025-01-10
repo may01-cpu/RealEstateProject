@@ -9,8 +9,8 @@ import utils.ConsoleUtils;
 public class LoginMenu {
 
     // File paths for storing client and worker data
-    private static final String CLIENT_FILE = "clients.csv";
-    private static final String WORKER_FILE = "workers.csv";
+    private static final String CLIENT_FILE = "client.csv"; // Assuming this is in the root of the project
+    private static final String WORKER_FILE = "real_estate/resources/worker.csv"; // Assuming this is in resources inside real_estate
 
     // Method to display the login menu
     public static void login() {
@@ -58,9 +58,9 @@ public class LoginMenu {
             String line;
             // Read each line from the file and split by comma
             while ((line = reader.readLine()) != null) {
-                String[] fields = line.split(",");
-                // Check if the email and password match
-                if (fields.length >= 2 && fields[0].equals(email) && fields[1].equals(password)) {
+                String[] fields = line.trim().split(",");
+                // Check if the email (4th field) and password (6th field) match
+                if (fields.length >= 6 && fields[3].trim().equals(email.trim()) && fields[5].trim().equals(password.trim())) {
                     return true;
                 }
             }
@@ -77,8 +77,8 @@ public class LoginMenu {
             String line;
             // Read each line from the worker file and check if the email exists
             while ((line = reader.readLine()) != null) {
-                String[] fields = line.split(",");
-                if (fields.length >= 1 && fields[0].equals(email)) {
+                String[] fields = line.trim().split(",");
+                if (fields.length >= 1 && fields[0].trim().equals(email.trim())) {
                     return true;
                 }
             }
