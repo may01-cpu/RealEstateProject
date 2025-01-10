@@ -5,7 +5,7 @@ public class Client extends User{
 
 
     public Client(String id, String firstName, String lastName, String email, String phoneNumber, String password, UserType userType, ClientType clientType) {
-        super( id, firstName, lastName, email, phoneNumber, password, userType);  // Call User constructor
+        super( id, firstName, lastName, email, phoneNumber, password);  // Call User constructor
         this.type = clientType;  // Set the ClientType for this client
     }
 

@@ -7,13 +7,11 @@ public class User {
     private String email; 
     private String phoneNumber;
     private String password;
-    private UserType userType;
     
 
 
 
-    public User(String id, String firstName, String lastName, String email, String phoneNumber, String password, UserType userType) {
-        this.id = id;
+    public User(String id, String firstName, String lastName, String email, String phoneNumber, String password) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -22,9 +20,6 @@ public class User {
         this.password = password;
 
         this.id = id;
-    
-
-        this.userType = userType;
 
     }
 
@@ -47,10 +42,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public UserType getUserType() {
-        return userType;
     }
 
     public String getId() {
@@ -80,9 +71,5 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
     }
 }
