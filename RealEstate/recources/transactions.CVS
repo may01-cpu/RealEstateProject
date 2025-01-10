@@ -1,3 +1,0 @@
-ID de Transaction, Type de Transaction , Montant ,ID de l'Initiateur ,ID du Destinataire ,Date de Début ,Date de Fin, Statut.
-1,Vente,10000000.00,initiator123,recipient456,2025-01-01,2025-01-10,En attente
-2,Achat,5000000.00,initiator789,recipient012,2025-01-05,2025-01-15,Complété
