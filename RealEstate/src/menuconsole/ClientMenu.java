@@ -3,6 +3,7 @@ package menuconsole;
 import java.util.Scanner;
 import java.util.List;
 import model.Client;
+import model.ClientType;
 import model.Transaction;
 import service.AppointmentService;
 import service.ClientService;
@@ -28,24 +29,21 @@ public class ClientMenu {
     public void displayMenu() {
         Scanner scanner = new Scanner(System.in);
 
-        switch (client.getType()) {
-            case BUYER:
-                ConsoleUtils.clearConsole();// locataire et acheteur
-                afficherMenuAcheteur(scanner);
-                break;
-            case SELLER:
-                ConsoleUtils.clearConsole();// vendeur et bayeur
-                afficherMenuVendeur(scanner);
-                break;
-            default:
+        if(client.getType()== ClientType.BUYER||client.getType()== ClientType.TENANT) {
+            ConsoleUtils.clearConsole();// locataire et acheteur
+            afficherMenuAcheteur(scanner);
+        }
+        if(client.getType()== ClientType.SELLER||client.getType()== ClientType.LANDLORD) {
+            ConsoleUtils.clearConsole();// vendeur et bayeur
+            afficherMenuVendeur(scanner);
+        }else{
                 System.out.println("Invalid client type.");
-                break;
         }
         
     }
     // Menu pour l'acheteur / locataire
     private void afficherMenuAcheteur(Scanner scanner) {
-        System.out.println("\n--- Buyer/Locataire Menu ---");
+        System.out.println("\n--- Buyer/Tenant Menu ---");
         System.out.println("1. View Available Properties");
         System.out.println("2. Schedule a Property Visit");
         System.out.println("3. View My Appointments");
@@ -123,7 +121,7 @@ public class ClientMenu {
     // Menu pour le vendeur / bayeur
     private void afficherMenuVendeur(Scanner scanner) {
         while (true) {
-            System.out.println("\n--- Seller/Buyer Menu ---");
+            System.out.println("\n--- Seller/Landlord Menu ---");
             System.out.println("1. Add a property listing");
             System.out.println("2. View my listed properties");
             System.out.println("3. View My Appointments");
